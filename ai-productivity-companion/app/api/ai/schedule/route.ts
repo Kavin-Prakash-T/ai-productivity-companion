@@ -4,6 +4,7 @@ import { getAuthUser } from "@/lib/getAuthUser";
 import Task from "@/models/Task";
 import Habit from "@/models/Habit";
 import { parseAiJson } from "@/utils/parseAiJson";
+import ScheduleBlock from "@/models/ScheduleBlock";
 import {
     errorResponse,
     successResponse,
@@ -41,6 +42,7 @@ export async function POST(request: Request) {
             workStart = "09:00",
             workEnd = "18:00",
             breakMinutes = 10,
+            saveSchedule = false,
         } = await request.json();
 
         const scheduleDate =
@@ -176,11 +178,65 @@ Rules:
         const result = parseAiJson<ScheduleResult>(
             completion.choices[0]?.message?.content
         );
+        if (saveSchedule) {
+            const taskMap = new Map(
+                tasks.map((task) => [
+                    task._id.toString(),
+                    task,
+                ])
+            );
+
+            const scheduleBlocks = result.schedule
+                .map((block) => {
+                    const task = taskMap.get(block.taskId);
+
+                    if (!task) {
+                        return null;
+                    }
+
+                    const startTime = new Date(
+                        `${scheduleDate}T${block.startTime}:00`
+                    );
+
+                    const endTime = new Date(
+                        `${scheduleDate}T${block.endTime}:00`
+                    );
+
+                    return {
+                        user: authUser.userId,
+                        task: task._id,
+                        title: task.title,
+                        startTime,
+                        endTime,
+                        durationMinutes: block.durationMinutes,
+                        aiGenerated: true,
+                        notes: block.reason,
+                    };
+                })
+                .filter(Boolean);
+
+            await ScheduleBlock.deleteMany({
+                user: authUser.userId,
+                aiGenerated: true,
+                startTime: {
+                    $gte: new Date(`${scheduleDate}T00:00:00`),
+                    $lte: new Date(`${scheduleDate}T23:59:59.999`),
+                },
+                status: "scheduled",
+            });
+
+            if (scheduleBlocks.length > 0) {
+                await ScheduleBlock.insertMany(scheduleBlocks);
+            }
+        }
 
         return successResponse(
-            "AI schedule generated successfully",
+            saveSchedule
+                ? "AI schedule generated and saved successfully"
+                : "AI schedule generated successfully",
             {
                 schedule: result,
+                saved: Boolean(saveSchedule),
             }
         );
     } catch (error) {
