@@ -94,7 +94,7 @@ export async function POST(request: Request) {
 
     const durationMinutes = Math.round(
       (endDate.getTime() - startDate.getTime()) /
-        60000
+      60000
     );
 
     const scheduleBlock = await ScheduleBlock.create({
