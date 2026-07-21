@@ -1,28 +1,19 @@
 import api from "@/lib/api";
-import {
-  LoginData,
-  RegisterData,
-  VerifyOtpData,
-  ForgotPasswordData,
-  ResetPasswordData,
-} from "@/types/auth";
 
-export const registerUser = (data: RegisterData) =>
+export const registerUser = (data: any) =>
   api.post("/auth/register", data);
 
-export const verifyEmail = (data: VerifyOtpData) =>
+export const verifyEmail = (data: any) =>
   api.post("/auth/verify-email", data);
 
-export const loginUser = (data: LoginData) =>
+export const loginUser = (data: any) =>
   api.post("/auth/login", data);
 
-export const forgotPassword = (
-  data: ForgotPasswordData
-) => api.post("/auth/forgot-password", data);
+export const forgotPassword = (data: any) =>
+  api.post("/auth/forgot-password", data);
 
-export const resetPassword = (
-  data: ResetPasswordData
-) => api.post("/auth/reset-password", data);
+export const resetPassword = (data: any) =>
+  api.post("/auth/reset-password", data);
 
 export const logoutUser = () =>
   api.post("/auth/logout");
