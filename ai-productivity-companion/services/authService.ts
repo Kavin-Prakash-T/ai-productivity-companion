@@ -17,3 +17,7 @@ export const resetPassword = (data: any) =>
 
 export const logoutUser = () =>
   api.post("/auth/logout");
+
+export const resendOtp = (data: { email: string }) =>
+  api.post("/auth/resend-otp", data);
+
