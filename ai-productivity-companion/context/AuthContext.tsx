@@ -59,17 +59,16 @@ export function AuthProvider({
 
     return (
         <AuthContext.Provider
-      value= {{
-        user,
-            loading,
-            login,
-            logout,
-      }
-}
-    >
-    { children }
-    </AuthContext.Provider>
-  );
+            value={{
+                user,
+                loading,
+                login,
+                logout,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
 }
 
 export const useAuth = () =>

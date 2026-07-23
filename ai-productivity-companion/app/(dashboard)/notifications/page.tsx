@@ -7,7 +7,7 @@ import { Bell } from "lucide-react";
 import {
     getNotifications,
     markAsRead,
-    markAllAsRead,
+    markAllRead,
     deleteNotification,
 } from "@/services/notificationService";
 import type { Notification } from "@/types";
@@ -54,7 +54,7 @@ export default function NotificationsPage() {
 
     async function handleMarkAllRead() {
         try {
-            await markAllAsRead();
+            await markAllRead();
             setNotifications((prev) =>
                 prev.map((n) => ({ ...n, isRead: true }))
             );
