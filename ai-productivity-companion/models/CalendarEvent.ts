@@ -19,6 +19,7 @@ export interface ICalendarEvent {
     allDay: boolean;
     reminderEnabled: boolean;
     reminderMinutesBefore?: number;
+    reminderSent: boolean;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -87,6 +88,11 @@ const calendarEventSchema = new Schema<ICalendarEvent>(
             type: Number,
             min: 0,
             max: 10080,
+        },
+
+        reminderSent: {
+            type: Boolean,
+            default: false,
         },
     },
     {

@@ -33,9 +33,6 @@ export interface Task {
     updatedAt?: string;
 }
 
-// ──────────────────────────────────────────
-// Goal
-// ──────────────────────────────────────────
 
 export type GoalStatus =
     | "not-started"
@@ -57,9 +54,6 @@ export interface Goal {
     updatedAt?: string;
 }
 
-// ──────────────────────────────────────────
-// Habit
-// ──────────────────────────────────────────
 
 export type HabitFrequency = "daily" | "weekly";
 
@@ -87,9 +81,7 @@ export interface Habit {
     updatedAt?: string;
 }
 
-// ──────────────────────────────────────────
-// Calendar Event
-// ──────────────────────────────────────────
+
 
 export type CalendarEventType =
     | "meeting"
@@ -111,13 +103,10 @@ export interface CalendarEvent {
     allDay: boolean;
     reminderEnabled: boolean;
     reminderMinutesBefore?: number;
+    reminderSent: boolean;
     createdAt?: string;
     updatedAt?: string;
 }
-
-// ──────────────────────────────────────────
-// Notification
-// ──────────────────────────────────────────
 
 export type NotificationType =
     | "task-reminder"
@@ -144,10 +133,6 @@ export interface Notification {
     updatedAt?: string;
 }
 
-// ──────────────────────────────────────────
-// Profile
-// ──────────────────────────────────────────
-
 export interface Profile {
     _id: string;
     name: string;
@@ -155,10 +140,6 @@ export interface Profile {
     avatar?: string;
     createdAt?: string;
 }
-
-// ──────────────────────────────────────────
-// Dashboard
-// ──────────────────────────────────────────
 
 export interface DashboardSummary {
     tasks: {
@@ -230,19 +211,11 @@ export interface TodayData {
     };
 }
 
-// ──────────────────────────────────────────
-// AI
-// ──────────────────────────────────────────
-
 export interface ChatMessage {
     role: "user" | "assistant";
     content: string;
     timestamp?: Date;
 }
-
-// ──────────────────────────────────────────
-// API Response
-// ──────────────────────────────────────────
 
 export interface ApiResponse<T = unknown> {
     success: boolean;
