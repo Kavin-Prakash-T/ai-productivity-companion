@@ -2,43 +2,79 @@
 
 import { useEffect, useState } from "react";
 
-import { getDashboard } from "@/services/dashboardService";
+import {
+    getDashboardSummary,
+    getUpcomingDeadlines,
+    getProductivity,
+    getTodayData,
+} from "@/services/dashboardService";
+
+import type {
+    DashboardSummary,
+    UpcomingDeadlines,
+    ProductivityData,
+    TodayData,
+} from "@/types";
+
+interface DashboardState {
+    summary: DashboardSummary | null;
+    upcoming: UpcomingDeadlines | null;
+    productivity: ProductivityData | null;
+    today: TodayData | null;
+    loading: boolean;
+    error: string | null;
+}
 
 export default function useDashboard() {
 
-    const [dashboard, setDashboard] = useState<any>(null);
+    const [state, setState] = useState<DashboardState>({
+        summary: null,
+        upcoming: null,
+        productivity: null,
+        today: null,
+        loading: true,
+        error: null,
+    });
 
-    const [loading, setLoading] = useState(true);
+    async function load() {
 
-    async function loadDashboard() {
+        setState((prev) => ({ ...prev, loading: true, error: null }));
 
         try {
 
-            const { data } = await getDashboard();
+            const [summaryRes, upcomingRes, productivityRes, todayRes] =
+                await Promise.all([
+                    getDashboardSummary(),
+                    getUpcomingDeadlines(7),
+                    getProductivity(7),
+                    getTodayData(),
+                ]);
 
-            setDashboard(data);
+            setState({
+                summary: summaryRes.data.data,
+                upcoming: upcomingRes.data.data,
+                productivity: productivityRes.data.data,
+                today: todayRes.data.data,
+                loading: false,
+                error: null,
+            });
 
-        }
-        finally {
+        } catch {
 
-            setLoading(false);
+            setState((prev) => ({
+                ...prev,
+                loading: false,
+                error: "Failed to load dashboard data.",
+            }));
 
         }
 
     }
 
     useEffect(() => {
-
-        loadDashboard();
-
+        load();
     }, []);
 
-    return {
-
-        dashboard,
-        loading,
-        refresh: loadDashboard
-
-    };
+    return { ...state, refresh: load };
 
 }

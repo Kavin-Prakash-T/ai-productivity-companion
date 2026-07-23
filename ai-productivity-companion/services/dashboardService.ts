@@ -1,13 +1,17 @@
 import api from "@/lib/api";
 
-export const getDashboard = () =>
-    api.get("/dashboard");
+// Dashboard summary: tasks/goals/habits counts & rates
+export const getDashboardSummary = () =>
+    api.get("/dashboard/summary");
 
-export const getStatistics = () =>
-    api.get("/dashboard/stats");
+// Today's tasks and habits
+export const getTodayData = () =>
+    api.get("/dashboard/today");
 
-export const getRecentTasks = () =>
-    api.get("/dashboard/recent-tasks");
+// Upcoming deadlines (tasks + goals) in next N days
+export const getUpcomingDeadlines = (days = 7) =>
+    api.get(`/dashboard/upcoming-deadlines?days=${days}`);
 
-export const getAIRecommendation = () =>
-    api.get("/dashboard/ai-recommendation");
+// Productivity score and daily stats
+export const getProductivity = (days = 7) =>
+    api.get(`/dashboard/productivity?days=${days}`);
