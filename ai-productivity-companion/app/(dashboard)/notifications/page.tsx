@@ -1,51 +1,119 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { Bell } from "lucide-react";
+
+import {
+    getNotifications,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+} from "@/services/notificationService";
+import type { Notification } from "@/types";
+
 import NotificationCard from "@/components/notifications/NotificationCard";
+import NotificationHeader from "@/components/notifications/NotificationHeader";
+import EmptyState from "@/components/common/EmptyState";
+import ErrorState from "@/components/common/ErrorState";
+import { SkeletonNotificationCard } from "@/components/common/Skeleton";
 
-const notifications = [
-    {
-        _id: "1",
-        title: "Task Reminder",
-        message: "Complete your React project before 6 PM.",
-        createdAt: "5 mins ago",
-        read: false,
-    },
-    {
-        _id: "2",
-        title: "Goal Completed",
-        message: "Congratulations! You completed your goal.",
-        createdAt: "Yesterday",
-        read: true,
-    },
-];
+export default function NotificationsPage() {
 
-export default function NotificationPage() {
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    async function load() {
+        setLoading(true);
+        setError(null);
+        try {
+            const { data } = await getNotifications();
+            setNotifications(data.data?.notifications ?? []);
+        } catch {
+            setError("Failed to load notifications.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        load();
+    }, []);
+
+    async function handleMarkRead(id: string) {
+        try {
+            await markAsRead(id);
+            setNotifications((prev) =>
+                prev.map((n) => (n._id === id ? { ...n, isRead: true } : n))
+            );
+        } catch {
+            toast.error("Failed to mark as read");
+        }
+    }
+
+    async function handleMarkAllRead() {
+        try {
+            await markAllAsRead();
+            setNotifications((prev) =>
+                prev.map((n) => ({ ...n, isRead: true }))
+            );
+            toast.success("All notifications marked as read");
+        } catch {
+            toast.error("Failed to mark all as read");
+        }
+    }
+
+    async function handleDelete(id: string) {
+        try {
+            await deleteNotification(id);
+            setNotifications((prev) => prev.filter((n) => n._id !== id));
+        } catch {
+            toast.error("Failed to delete notification");
+        }
+    }
+
+    const unreadCount = notifications.filter((n) => !n.isRead).length;
+
     return (
-        <div className="space-y-8">
+        <div className="space-y-6">
 
-            <div>
+            <NotificationHeader
+                unreadCount={unreadCount}
+                onMarkAllRead={handleMarkAllRead}
+                loading={loading}
+            />
 
-                <h1 className="text-3xl font-bold">
-                    Notifications
-                </h1>
+            {error && <ErrorState message={error} onRetry={load} />}
 
-                <p className="mt-2 text-gray-500">
-                    Stay updated with reminders and alerts.
-                </p>
-
-            </div>
-
-            <div className="space-y-4">
-
-                {notifications.map((notification) => (
-
-                    <NotificationCard
-                        key={notification._id}
-                        notification={notification}
+            {!error && (
+                loading ? (
+                    <div className="space-y-4">
+                        {[1, 2, 3, 4].map((i) => (
+                            <SkeletonNotificationCard key={i} />
+                        ))}
+                    </div>
+                ) : notifications.length === 0 ? (
+                    <EmptyState
+                        icon={Bell}
+                        title="All Clear"
+                        description="You have no notifications right now. We'll let you know when something important happens."
                     />
-
-                ))}
-
-            </div>
+                ) : (
+                    <div className="space-y-4">
+                        {notifications.map((notification) => (
+                            <NotificationCard
+                                key={notification._id}
+                                notification={notification}
+                                onMarkRead={handleMarkRead}
+                                onDelete={handleDelete}
+                            />
+                        ))}
+                    </div>
+                )
+            )}
 
         </div>
     );
+
 }

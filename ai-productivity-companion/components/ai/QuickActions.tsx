@@ -1,26 +1,37 @@
-import { Sparkles } from "lucide-react";
+"use client";
 
-const actions = [
-    "Prioritize My Tasks",
-    "Generate Today's Schedule",
-    "Productivity Tips",
-    "Break Down a Task",
+import SuggestionCard from "./SuggestionCard";
+
+const QUICK_PROMPTS = [
+    "What should I focus on today?",
+    "Help me prioritize my tasks",
+    "How can I improve my habit streak?",
+    "Suggest a plan for this week",
+    "Give me productivity tips",
+    "Review my goals progress",
 ];
 
-export default function QuickActions() {
+interface Props {
+    onAction: (prompt: string) => void;
+}
+
+export default function QuickActions({ onAction }: Props) {
     return (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {actions.map((action) => (
-                <button
-                    key={action}
-                    className="rounded-xl border bg-white p-4 text-left transition hover:bg-black hover:text-white"
-                >
-                    <div className="mb-2">
-                        <Sparkles size={20} />
-                    </div>
-                    <p className="font-medium">{action}</p>
-                </button>
-            ))}
+        <div className="rounded-2xl border bg-white p-5">
+
+            <p className="text-sm font-medium text-gray-500 mb-3">Quick Prompts</p>
+
+            <div className="flex flex-wrap gap-2">
+                {QUICK_PROMPTS.map((prompt) => (
+                    <SuggestionCard
+                        key={prompt}
+                        text={prompt}
+                        onClick={() => onAction(prompt)}
+                    />
+                ))}
+            </div>
+
         </div>
     );
+
 }

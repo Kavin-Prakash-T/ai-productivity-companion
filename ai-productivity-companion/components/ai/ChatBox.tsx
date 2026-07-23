@@ -1,69 +1,149 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Bot } from "lucide-react";
-
+import type { ChatMessage as ChatMessageType } from "@/types";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import QuickActions from "./QuickActions";
 
+const INITIAL_MESSAGE: ChatMessageType = {
+    role: "assistant",
+    content: "Hello! I'm your AI Productivity Companion. I can help you prioritize tasks, build habits, plan your day, and boost your productivity. How can I help you today?",
+    timestamp: new Date(),
+};
+
 export default function ChatBox() {
 
-    const [messages, setMessages] = useState<any[]>([
-        {
+    const [messages, setMessages] = useState<ChatMessageType[]>([INITIAL_MESSAGE]);
+    const [loading, setLoading] = useState(false);
+
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // Auto-scroll on new messages
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages, loading]);
+
+    function handleSend(content: string) {
+
+        const userMsg: ChatMessageType = {
+            role: "user",
+            content,
+            timestamp: new Date(),
+        };
+
+        setMessages((prev) => [...prev, userMsg]);
+
+    }
+
+    function handleResponse(content: string) {
+
+        const assistantMsg: ChatMessageType = {
             role: "assistant",
-            content: "Hello! I'm your AI Productivity Companion. How can I help you today?"
-        }
-    ]);
+            content,
+            timestamp: new Date(),
+        };
+
+        setMessages((prev) => [...prev, assistantMsg]);
+
+    }
+
+    function handleQuickAction(prompt: string) {
+
+        const userMsg: ChatMessageType = {
+            role: "user",
+            content: prompt,
+            timestamp: new Date(),
+        };
+
+        setMessages((prev) => [...prev, userMsg]);
+
+    }
+
+    const lastAssistantIndex = messages
+        .map((m, i) => (m.role === "assistant" ? i : -1))
+        .filter((i) => i !== -1)
+        .pop();
 
     return (
+        <div className="mx-auto max-w-4xl space-y-4">
 
-        <div className="mx-auto max-w-5xl">
+            {/* Title */}
+            <div className="flex items-center gap-3">
 
-            <div className="mb-6 flex items-center gap-3">
-
-                <Bot size={34} />
+                <div className="rounded-2xl bg-black p-2.5 text-white">
+                    <Bot size={24} />
+                </div>
 
                 <div>
-
-                    <h1 className="text-3xl font-bold">
-                        AI Assistant
-                    </h1>
-
-                    <p className="text-gray-500">
-                        Plan, prioritize and organize your work.
-                    </p>
-
+                    <h1 className="text-2xl sm:text-3xl font-bold">AI Assistant</h1>
+                    <p className="text-sm text-gray-500">Plan, prioritize and organize your work.</p>
                 </div>
 
             </div>
 
-            <QuickActions />
+            {/* Quick actions */}
+            <QuickActions onAction={handleQuickAction} />
 
-            <div className="mt-6 rounded-2xl border bg-white p-6">
+            {/* Chat area */}
+            <div className="rounded-2xl border bg-white overflow-hidden">
 
-                <div className="space-y-5 h-[500px] overflow-y-auto">
+                {/* Messages */}
+                <div
+                    ref={containerRef}
+                    className="h-[460px] overflow-y-auto p-5 space-y-4"
+                >
 
-                    {messages.map((message, index) =>
-
+                    {messages.map((message, index) => (
                         <ChatMessage
                             key={index}
                             message={message}
+                            isLast={index === lastAssistantIndex}
+                            onRegenerate={
+                                index === lastAssistantIndex
+                                    ? () => {
+                                        // Remove last assistant message and resend last user message
+                                        const userMessages = messages.filter((m) => m.role === "user");
+                                        const lastUser = userMessages[userMessages.length - 1];
+                                        if (lastUser) {
+                                            setMessages((prev) => prev.slice(0, -1));
+                                        }
+                                    }
+                                    : undefined
+                            }
                         />
+                    ))}
 
+                    {/* Typing indicator */}
+                    {loading && (
+                        <div className="flex justify-start">
+                            <div className="rounded-2xl bg-gray-100 px-4 py-3 flex items-center gap-1">
+                                <span className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:0ms]" />
+                                <span className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:150ms]" />
+                                <span className="h-2 w-2 animate-bounce rounded-full bg-gray-400 [animation-delay:300ms]" />
+                            </div>
+                        </div>
                     )}
+
+                    <div ref={messagesEndRef} />
 
                 </div>
 
-                <ChatInput
-                    messages={messages}
-                    setMessages={setMessages}
-                />
+                {/* Input */}
+                <div className="border-t p-4">
+                    <ChatInput
+                        onSend={handleSend}
+                        onResponse={handleResponse}
+                        onLoadingChange={setLoading}
+                        loading={loading}
+                    />
+                </div>
 
             </div>
 
         </div>
-
     );
 
 }

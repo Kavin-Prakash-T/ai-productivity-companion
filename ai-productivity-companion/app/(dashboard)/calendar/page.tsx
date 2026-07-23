@@ -1,28 +1,82 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import toast from "react-hot-toast";
+import { Plus, CalendarDays } from "lucide-react";
+
+import { getEvents, deleteEvent } from "@/services/calendarService";
+import type { CalendarEvent } from "@/types";
+
 import CalendarGrid from "@/components/calendar/CalendarGrid";
+import CalendarHeader from "@/components/calendar/CalendarHeader";
+import ErrorState from "@/components/common/ErrorState";
 
 export default function CalendarPage() {
-    return (
-        <div className="space-y-8">
 
-            <div className="flex justify-between items-center">
+    const [events, setEvents] = useState<CalendarEvent[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const [selectedDay, setSelectedDay] = useState<number | null>(null);
+
+    async function load() {
+        setLoading(true);
+        setError(null);
+        try {
+            const { data } = await getEvents();
+            setEvents(data.data?.events ?? []);
+        } catch {
+            setError("Failed to load events.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        load();
+    }, []);
+
+    function goToPrev() {
+        setCurrentDate((d) => {
+            const n = new Date(d);
+            n.setMonth(n.getMonth() - 1);
+            return n;
+        });
+        setSelectedDay(null);
+    }
+
+    function goToNext() {
+        setCurrentDate((d) => {
+            const n = new Date(d);
+            n.setMonth(n.getMonth() + 1);
+            return n;
+        });
+        setSelectedDay(null);
+    }
+
+    function goToToday() {
+        setCurrentDate(new Date());
+        setSelectedDay(new Date().getDate());
+    }
+
+    return (
+        <div className="space-y-6">
+
+            {/* Header */}
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                 <div>
-
-                    <h1 className="text-3xl font-bold">
-                        Calendar
-                    </h1>
-
-                    <p className="text-gray-500 mt-2">
-                        Manage your schedule and events.
+                    <h1 className="text-2xl sm:text-3xl font-bold">Calendar</h1>
+                    <p className="mt-1 text-sm text-gray-500">
+                        {loading ? "Loading..." : `${events.length} event${events.length !== 1 ? "s" : ""}`}
                     </p>
-
                 </div>
 
                 <Link
                     href="/calendar/create"
-                    className="flex items-center gap-2 rounded-xl bg-black text-white px-5 py-3"
+                    className="inline-flex items-center gap-2 rounded-xl bg-black px-5 py-2.5 text-sm font-medium text-white hover:bg-neutral-800 transition"
                 >
                     <Plus size={18} />
                     New Event
@@ -30,8 +84,42 @@ export default function CalendarPage() {
 
             </div>
 
-            <CalendarGrid />
+            {/* Error */}
+            {error && <ErrorState message={error} onRetry={load} />}
+
+            {/* Calendar */}
+            {!error && (
+                <div className="rounded-2xl border bg-white p-5 sm:p-6 space-y-5">
+
+                    <CalendarHeader
+                        currentDate={currentDate}
+                        onPrev={goToPrev}
+                        onNext={goToNext}
+                        onToday={goToToday}
+                    />
+
+                    {loading ? (
+                        <div className="grid grid-cols-7 gap-1">
+                            {Array.from({ length: 35 }).map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="h-16 sm:h-24 animate-pulse rounded-xl bg-gray-100"
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <CalendarGrid
+                            events={events}
+                            currentDate={currentDate}
+                            selectedDay={selectedDay}
+                            onSelectDay={setSelectedDay}
+                        />
+                    )}
+
+                </div>
+            )}
 
         </div>
     );
+
 }
