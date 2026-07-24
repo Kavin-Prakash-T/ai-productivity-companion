@@ -127,27 +127,27 @@ export default function TaskDetails({ id }: { id: string }) {
                 <div className="flex items-start gap-3">
                     <Link
                         href="/tasks"
-                        className="mt-1 rounded-xl border p-2 hover:bg-gray-100 transition"
+                        className="mt-1 rounded-xl border border-[#E5E7EB] bg-white p-2 text-[#6B7280] hover:text-[#0A0A0A] hover:bg-gray-50 transition shadow-sm"
                     >
                         <ArrowLeft size={18} />
                     </Link>
                     <div>
-                        <h1 className="text-2xl sm:text-3xl font-bold">{task.title}</h1>
-                        <p className="text-gray-500 mt-1 text-sm">Task Details</p>
+                        <h1 className="text-2xl sm:text-3xl font-bold text-[#0A0A0A]">{task.title}</h1>
+                        <p className="text-[#6B7280] mt-1 text-sm font-medium">Task Details</p>
                     </div>
                 </div>
 
                 <div className="flex gap-2">
                     <Link
                         href={`/tasks/${id}/edit`}
-                        className="flex items-center gap-2 rounded-xl border px-4 py-2 text-sm hover:bg-gray-100 transition"
+                        className="flex items-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-4 py-2 text-sm font-medium text-[#0A0A0A] hover:bg-gray-50 transition shadow-sm"
                     >
                         <Pencil size={16} />
                         Edit
                     </Link>
                     <button
                         onClick={() => setShowDelete(true)}
-                        className="flex items-center gap-2 rounded-xl border border-red-300 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition"
+                        className="flex items-center gap-2 rounded-xl border border-red-200 bg-white px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 hover:border-red-300 transition shadow-sm"
                     >
                         <Trash2 size={16} />
                         Delete
@@ -157,46 +157,46 @@ export default function TaskDetails({ id }: { id: string }) {
             </div>
 
             {/* Content card */}
-            <div className="rounded-2xl border bg-white p-6 sm:p-8 space-y-6">
+            <div className="rounded-2xl border border-[#E5E7EB] bg-white shadow-sm p-6 sm:p-8 space-y-6">
 
                 <div>
-                    <h2 className="font-semibold text-gray-800 text-lg mb-2">Description</h2>
-                    <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
+                    <h2 className="font-semibold text-[#0A0A0A] text-lg mb-2">Description</h2>
+                    <p className="text-[#6B7280] leading-relaxed whitespace-pre-wrap">
                         {task.description || "No description provided."}
                     </p>
                 </div>
 
-                <div className="grid sm:grid-cols-2 gap-6 border-t border-b py-6">
+                <div className="grid sm:grid-cols-2 gap-6 border-t border-b border-[#E5E7EB] py-6">
 
-                    <div className="flex items-center gap-3 text-gray-600">
-                        <Flag size={18} className="text-gray-400 shrink-0" />
+                    <div className="flex items-center gap-3 text-[#6B7280]">
+                        <Flag size={18} className="text-[#9CA3AF] shrink-0" />
                         <div className="text-sm">
-                            <span className="block text-xs text-gray-400">Priority</span>
+                            <span className="block text-xs font-medium text-[#9CA3AF]">Priority</span>
                             <PriorityBadge priority={task.priority} />
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 text-gray-600">
-                        <FolderOpen size={18} className="text-gray-400 shrink-0" />
+                    <div className="flex items-center gap-3 text-[#6B7280]">
+                        <FolderOpen size={18} className="text-[#9CA3AF] shrink-0" />
                         <div className="text-sm">
-                            <span className="block text-xs text-gray-400">Category</span>
-                            <span className="font-medium text-black">{task.category}</span>
+                            <span className="block text-xs font-medium text-[#9CA3AF]">Category</span>
+                            <span className="font-semibold text-[#0A0A0A]">{task.category}</span>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 text-gray-600">
-                        <Calendar size={18} className="text-gray-400 shrink-0" />
+                    <div className="flex items-center gap-3 text-[#6B7280]">
+                        <Calendar size={18} className="text-[#9CA3AF] shrink-0" />
                         <div className="text-sm">
-                            <span className="block text-xs text-gray-400">Due Date</span>
-                            <span className="font-medium text-black">{formatDate(task.dueDate)}</span>
+                            <span className="block text-xs font-medium text-[#9CA3AF]">Due Date</span>
+                            <span className="font-semibold text-[#0A0A0A]">{formatDate(task.dueDate)}</span>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 text-gray-600">
-                        <Clock size={18} className="text-gray-400 shrink-0" />
+                    <div className="flex items-center gap-3 text-[#6B7280]">
+                        <Clock size={18} className="text-[#9CA3AF] shrink-0" />
                         <div className="text-sm">
-                            <span className="block text-xs text-gray-400">Estimated Duration</span>
-                            <span className="font-medium text-black">{formatMinutes(task.estimatedMinutes)}</span>
+                            <span className="block text-xs font-medium text-[#9CA3AF]">Estimated Duration</span>
+                            <span className="font-semibold text-[#0A0A0A]">{formatMinutes(task.estimatedMinutes)}</span>
                         </div>
                     </div>
 
@@ -206,16 +206,16 @@ export default function TaskDetails({ id }: { id: string }) {
                     <button
                         onClick={handleComplete}
                         disabled={isCompleted || updating}
-                        className={`flex items-center gap-2 rounded-xl px-6 py-3 font-medium transition ${isCompleted
-                            ? "bg-gray-100 text-gray-500 cursor-default"
-                            : "bg-black text-white hover:bg-neutral-800"
+                        className={`flex items-center gap-2 rounded-xl px-6 py-3 font-medium transition shadow-sm ${isCompleted
+                            ? "bg-gray-100 text-[#9CA3AF] cursor-default"
+                            : "bg-[#0A0A0A] text-white hover:bg-black/90"
                             } disabled:opacity-50`}
                     >
-                        <CheckCircle2 size={20} className={isCompleted ? "fill-gray-400 text-white" : ""} />
+                        <CheckCircle2 size={20} className={isCompleted ? "fill-gray-200 text-white" : ""} />
                         {isCompleted ? "Completed" : updating ? "Saving..." : "Mark Completed"}
                     </button>
                     {task.status && !isCompleted && (
-                        <span className="text-sm text-gray-400 italic">Task is currently {task.status}.</span>
+                        <span className="text-sm text-[#9CA3AF] italic font-medium">Task is currently {task.status}.</span>
                     )}
                 </div>
 
@@ -224,13 +224,13 @@ export default function TaskDetails({ id }: { id: string }) {
             {/* Delete Confirmation Modal */}
             {showDelete && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/40" onClick={() => setShowDelete(false)} />
-                    <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl">
-                        <h2 className="text-center text-xl font-bold">Delete Task?</h2>
-                        <p className="mt-3 text-center text-sm text-gray-500">This action cannot be undone.</p>
+                    <div className="absolute inset-0 bg-[#0A0A0A]/40 backdrop-blur-sm" onClick={() => setShowDelete(false)} />
+                    <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white border border-[#E5E7EB] p-8 shadow-2xl">
+                        <h2 className="text-center text-xl font-bold text-[#0A0A0A]">Delete Task?</h2>
+                        <p className="mt-3 text-center text-sm font-medium text-[#6B7280]">This action cannot be undone.</p>
                         <div className="mt-6 flex gap-3">
-                            <button onClick={() => setShowDelete(false)} className="flex-1 h-11 rounded-xl border hover:bg-gray-50 transition">Cancel</button>
-                            <button onClick={handleDelete} disabled={deleting} className="flex-1 h-11 rounded-xl bg-red-600 text-white hover:bg-red-700 transition disabled:opacity-50">
+                            <button onClick={() => setShowDelete(false)} className="flex-1 h-11 rounded-xl border border-[#E5E7EB] bg-white font-medium text-[#0A0A0A] hover:bg-gray-50 transition shadow-sm">Cancel</button>
+                            <button onClick={handleDelete} disabled={deleting} className="flex-1 h-11 rounded-xl bg-red-600 font-medium text-white hover:bg-red-700 transition shadow-sm disabled:opacity-50">
                                 {deleting ? "Deleting..." : "Delete"}
                             </button>
                         </div>

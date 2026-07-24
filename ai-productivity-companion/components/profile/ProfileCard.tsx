@@ -59,7 +59,7 @@ export default function ProfileCard() {
     if (loading) {
         return (
             <div className="max-w-4xl mx-auto flex items-center justify-center py-20">
-                <Loader2 size={32} className="animate-spin text-gray-400" />
+                <Loader2 size={32} className="animate-spin text-[#0A0A0A]" />
             </div>
         );
     }
@@ -76,39 +76,39 @@ export default function ProfileCard() {
         : "N/A";
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-8 relative z-10">
 
             <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold">Profile</h1>
+                <h1 className="text-3xl font-bold text-[#0A0A0A]">Profile</h1>
                 <Link
                     href="/profile/edit"
-                    className="flex items-center gap-2 rounded-xl bg-black px-5 py-3 text-white hover:bg-neutral-800 transition"
+                    className="flex items-center gap-2 rounded-xl bg-[#0A0A0A] text-white hover:bg-black/90 px-5 py-3 hover:shadow-sm active:scale-[0.98] transition-all duration-200 text-sm font-semibold shadow-sm"
                 >
-                    <Pencil size={18} />
+                    <Pencil size={16} />
                     Edit
                 </Link>
             </div>
 
             {/* Profile Info */}
-            <div className="rounded-2xl border bg-white p-8">
+            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-8 shadow-sm">
 
                 <div className="flex flex-col md:flex-row gap-8 items-center">
 
-                    <div className="flex h-32 w-32 items-center justify-center rounded-full bg-black text-white shrink-0">
-                        <User size={60} />
+                    <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gray-100 border border-[#E5E7EB] text-[#0A0A0A] shrink-0 shadow-sm">
+                        <User size={54} />
                     </div>
 
-                    <div className="space-y-4 min-w-0">
+                    <div className="space-y-3.5 min-w-0">
 
-                        <h2 className="text-3xl font-bold truncate">{profile.name}</h2>
+                        <h2 className="text-3xl font-bold text-[#0A0A0A] truncate">{profile.name}</h2>
 
-                        <div className="flex items-center gap-3 text-gray-600">
-                            <Mail size={18} className="shrink-0" />
+                        <div className="flex items-center gap-3 text-[#6B7280] font-semibold text-sm">
+                            <Mail size={16} className="shrink-0 text-[#9CA3AF]" />
                             <span className="truncate">{profile.email}</span>
                         </div>
 
-                        <div className="flex items-center gap-3 text-gray-600">
-                            <Calendar size={18} className="shrink-0" />
+                        <div className="flex items-center gap-3 text-[#6B7280] font-semibold text-sm">
+                            <Calendar size={16} className="shrink-0 text-[#9CA3AF]" />
                             <span>Joined {joinedDate}</span>
                         </div>
 

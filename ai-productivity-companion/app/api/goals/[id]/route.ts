@@ -100,23 +100,9 @@ export async function PUT(
             return errorResponse("Invalid target date", 400);
         }
 
-        const allowedFields = [
-            "title",
-            "description",
-            "category",
-            "targetDate",
-            "progress",
-            "status",
-        ];
-
         const updateData: Record<string, unknown> = {};
 
-        for (const field of allowedFields) {
-            if (body[field] !== undefined) {
-                updateData[field] = body[field];
-            }
-        }
-
+        // --- Scalar field updates ---
         if (body.title !== undefined) {
             if (!body.title.trim()) {
                 return errorResponse(
@@ -124,7 +110,6 @@ export async function PUT(
                     400
                 );
             }
-
             updateData.title = body.title.trim();
         }
 
@@ -141,25 +126,46 @@ export async function PUT(
             updateData.targetDate = new Date(body.targetDate);
         }
 
-        if (body.progress !== undefined) {
-            updateData.progress = Number(body.progress);
+        // --- Progress + Status resolution (single pass, no double-write) ---
+        // Determine the final progress value (prefer explicit status=completed over a partial progress value)
+        let resolvedProgress =
+            body.progress !== undefined ? Number(body.progress) : undefined;
+        let resolvedStatus: string | undefined = body.status;
 
-            if (Number(body.progress) === 100) {
-                updateData.status = "completed";
-                updateData.completedAt = new Date();
-            } else if (
-                Number(body.progress) > 0 &&
-                body.status !== "cancelled"
-            ) {
-                updateData.status = "in-progress";
-                updateData.completedAt = undefined;
-            }
+        // If the caller explicitly says status=completed, force progress to 100
+        if (body.status === "completed") {
+            resolvedProgress = 100;
         }
 
-        if (body.status === "completed") {
-            updateData.progress = 100;
+        // If progress reaches 100, status must be completed (only if caller didn't request cancelled)
+        if (resolvedProgress === 100 && resolvedStatus !== "cancelled") {
+            resolvedStatus = "completed";
+        } else if (
+            resolvedProgress !== undefined &&
+            resolvedProgress > 0 &&
+            resolvedProgress < 100 &&
+            resolvedStatus !== "cancelled"
+        ) {
+            // Any progress between 1-99 moves goal to in-progress unless explicitly set otherwise
+            if (!resolvedStatus) {
+                resolvedStatus = "in-progress";
+            }
+        } else if (resolvedProgress === 0 && !resolvedStatus) {
+            resolvedStatus = "not-started";
+        }
+
+        if (resolvedProgress !== undefined) {
+            updateData.progress = resolvedProgress;
+        }
+
+        if (resolvedStatus) {
+            updateData.status = resolvedStatus;
+        }
+
+        // Set/clear completedAt based on resolved status
+        if (resolvedStatus === "completed") {
             updateData.completedAt = new Date();
-        } else if (body.status) {
+        } else if (resolvedStatus && resolvedStatus !== "completed") {
             updateData.completedAt = undefined;
         }
 

@@ -76,17 +76,17 @@ export default function ResetPasswordForm() {
                 <div className="relative">
 
                     <ShieldCheck
-                        size={20}
-                        className="absolute left-4 top-3.5 text-gray-500"
+                        size={18}
+                        className="absolute left-4 top-3.5 text-[#9CA3AF]"
                     />
 
                     <input
                         type="text"
-                        placeholder="OTP"
+                        placeholder="000000"
                         maxLength={6}
                         value={otp}
                         onChange={(e) => setOtp(e.target.value)}
-                        className="w-full h-12 rounded-xl border border-gray-300 pl-12 pr-4 text-center tracking-[8px] focus:border-black"
+                        className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white pl-12 pr-4 text-center tracking-[8px] text-[#0A0A0A] placeholder-[#D1D5DB] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                     />
 
                 </div>
@@ -94,8 +94,8 @@ export default function ResetPasswordForm() {
                 <div className="relative">
 
                     <Lock
-                        size={20}
-                        className="absolute left-4 top-3.5 text-gray-500"
+                        size={18}
+                        className="absolute left-4 top-3.5 text-[#9CA3AF]"
                     />
 
                     <input
@@ -105,7 +105,7 @@ export default function ResetPasswordForm() {
                         onChange={(e) =>
                             setPassword(e.target.value)
                         }
-                        className="w-full h-12 rounded-xl border border-gray-300 pl-12 pr-12 focus:border-black"
+                        className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white pl-12 pr-12 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                     />
 
                     <button
@@ -113,12 +113,12 @@ export default function ResetPasswordForm() {
                         onClick={() =>
                             setShowPassword(!showPassword)
                         }
-                        className="absolute right-4 top-3"
+                        className="absolute right-4 top-3.5 text-[#9CA3AF] hover:text-[#0A0A0A] transition-colors"
                     >
                         {showPassword ? (
-                            <EyeOff size={20} />
+                            <EyeOff size={18} />
                         ) : (
-                            <Eye size={20} />
+                            <Eye size={18} />
                         )}
                     </button>
 
@@ -127,8 +127,8 @@ export default function ResetPasswordForm() {
                 <div className="relative">
 
                     <Lock
-                        size={20}
-                        className="absolute left-4 top-3.5 text-gray-500"
+                        size={18}
+                        className="absolute left-4 top-3.5 text-[#9CA3AF]"
                     />
 
                     <input
@@ -142,7 +142,7 @@ export default function ResetPasswordForm() {
                         onChange={(e) =>
                             setConfirmPassword(e.target.value)
                         }
-                        className="w-full h-12 rounded-xl border border-gray-300 pl-12 pr-12 focus:border-black"
+                        className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white pl-12 pr-12 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                     />
 
                     <button
@@ -152,12 +152,12 @@ export default function ResetPasswordForm() {
                                 !showConfirmPassword
                             )
                         }
-                        className="absolute right-4 top-3"
+                        className="absolute right-4 top-3.5 text-[#9CA3AF] hover:text-[#0A0A0A] transition-colors"
                     >
                         {showConfirmPassword ? (
-                            <EyeOff size={20} />
+                            <EyeOff size={18} />
                         ) : (
-                            <Eye size={20} />
+                            <Eye size={18} />
                         )}
                     </button>
 

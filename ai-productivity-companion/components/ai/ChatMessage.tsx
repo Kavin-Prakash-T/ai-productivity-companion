@@ -41,19 +41,19 @@ export default function ChatMessage({ message, isLast, onRegenerate }: Props) {
 
             {/* Avatar */}
             <div
-                className={`shrink-0 h-9 w-9 rounded-full flex items-center justify-center ${isUser ? "bg-black text-white" : "bg-gray-100"
+                className={`shrink-0 h-9 w-9 rounded-full flex items-center justify-center border ${isUser ? "bg-[#0A0A0A] border-[#0A0A0A] text-white shadow-sm" : "bg-white border-[#E5E7EB] text-[#0A0A0A] shadow-sm"
                     }`}
             >
-                {isUser ? <User size={16} /> : <Bot size={16} />}
+                {isUser ? <User size={15} /> : <Bot size={15} />}
             </div>
 
             {/* Bubble */}
-            <div className={`flex flex-col gap-1 max-w-[80%] ${isUser ? "items-end" : "items-start"}`}>
+            <div className={`flex flex-col gap-1.5 max-w-[80%] ${isUser ? "items-end" : "items-start"}`}>
 
                 <div
                     className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${isUser
-                        ? "bg-black text-white rounded-tr-sm"
-                        : "bg-gray-100 text-gray-800 rounded-tl-sm"
+                        ? "bg-[#0A0A0A] text-white border border-[#0A0A0A] rounded-tr-sm shadow-sm"
+                        : "bg-white border border-[#E5E7EB] text-[#0A0A0A] rounded-tl-sm shadow-sm"
                         }`}
                     dangerouslySetInnerHTML={{ __html: renderMarkdown(message.content) }}
                 />
@@ -62,7 +62,7 @@ export default function ChatMessage({ message, isLast, onRegenerate }: Props) {
                 <div className={`flex items-center gap-2 ${isUser ? "flex-row-reverse" : ""}`}>
 
                     {message.timestamp && (
-                        <span className="text-xs text-gray-400">
+                        <span className="text-[10px] text-[#9CA3AF] font-semibold uppercase tracking-wider">
                             {formatTime(message.timestamp)}
                         </span>
                     )}
@@ -73,18 +73,18 @@ export default function ChatMessage({ message, isLast, onRegenerate }: Props) {
                             <button
                                 onClick={handleCopy}
                                 title="Copy message"
-                                className="rounded-lg p-1 hover:bg-gray-100 transition text-gray-400"
+                                className="rounded-lg p-1 hover:bg-gray-100 transition text-[#9CA3AF] hover:text-[#0A0A0A]"
                             >
-                                {copied ? <Check size={13} className="text-green-500" /> : <Copy size={13} />}
+                                {copied ? <Check size={12} className="text-green-500" /> : <Copy size={12} />}
                             </button>
 
                             {isLast && onRegenerate && (
                                 <button
                                     onClick={onRegenerate}
                                     title="Regenerate"
-                                    className="rounded-lg p-1 hover:bg-gray-100 transition text-gray-400"
+                                    className="rounded-lg p-1 hover:bg-gray-100 transition text-[#9CA3AF] hover:text-[#0A0A0A]"
                                 >
-                                    <RefreshCw size={13} />
+                                    <RefreshCw size={12} />
                                 </button>
                             )}
 

@@ -20,12 +20,12 @@ import ErrorState from "@/components/common/ErrorState";
 import { SkeletonText } from "@/components/common/Skeleton";
 
 const typeColors: Record<string, string> = {
-    meeting: "bg-blue-100 text-blue-700",
-    interview: "bg-purple-100 text-purple-700",
-    class: "bg-green-100 text-green-700",
-    appointment: "bg-yellow-100 text-yellow-700",
-    personal: "bg-gray-100 text-gray-700",
-    other: "bg-gray-100 text-gray-600",
+    meeting: "bg-blue-50 text-blue-700 border border-blue-200",
+    interview: "bg-purple-50 text-purple-700 border border-purple-200",
+    class: "bg-green-50 text-green-700 border border-green-200",
+    appointment: "bg-yellow-50 text-yellow-700 border border-yellow-200",
+    personal: "bg-gray-50 text-[#6B7280] border border-[#E5E7EB]",
+    other: "bg-gray-50 text-[#6B7280] border border-[#E5E7EB]",
 };
 
 function formatFullDate(dateStr?: string) {
@@ -91,7 +91,7 @@ export default function EventDetails({ id }: { id: string }) {
         return (
             <div className="mx-auto max-w-4xl space-y-6">
                 <div className="h-8 w-48 animate-pulse rounded bg-gray-200" />
-                <div className="rounded-2xl border bg-white p-8">
+                <div className="rounded-2xl border border-[#E5E7EB] bg-white p-8 shadow-sm">
                     <SkeletonText lines={4} />
                 </div>
             </div>
@@ -102,7 +102,7 @@ export default function EventDetails({ id }: { id: string }) {
         return <ErrorState message={error ?? "Event not found."} onRetry={loadEvent} />;
     }
 
-    const typeColor = typeColors[event.type] ?? "bg-gray-100 text-gray-600";
+    const typeColor = typeColors[event.type] ?? "bg-gray-50 text-[#6B7280] border border-[#E5E7EB]";
 
     return (
         <div className="mx-auto max-w-4xl space-y-6">
@@ -113,19 +113,19 @@ export default function EventDetails({ id }: { id: string }) {
                 <div className="flex items-start gap-3">
                     <Link
                         href="/calendar"
-                        className="mt-1 rounded-xl border p-2 hover:bg-gray-100 transition"
+                        className="mt-1 rounded-xl border border-[#E5E7EB] bg-white p-2 text-[#6B7280] hover:text-[#0A0A0A] hover:bg-gray-50 transition shadow-sm"
                     >
                         <ArrowLeft size={18} />
                     </Link>
                     <div>
-                        <h1 className="text-2xl sm:text-3xl font-bold">{event.title}</h1>
-                        <p className="text-gray-500 mt-1 text-sm">Calendar Event Details</p>
+                        <h1 className="text-2xl sm:text-3xl font-bold text-[#0A0A0A]">{event.title}</h1>
+                        <p className="mt-1 text-sm font-medium text-[#6B7280]">Calendar Event Details</p>
                     </div>
                 </div>
 
                 <button
                     onClick={() => setShowDelete(true)}
-                    className="flex items-center gap-2 rounded-xl border border-red-300 px-5 py-3 text-red-600 hover:bg-red-50 transition sm:self-start"
+                    className="flex items-center gap-2 rounded-xl border border-red-200 bg-white px-5 py-3 font-medium text-red-600 hover:bg-red-50 hover:border-red-300 transition shadow-sm sm:self-start"
                 >
                     <Trash2 size={18} />
                     Delete Event
@@ -134,7 +134,7 @@ export default function EventDetails({ id }: { id: string }) {
             </div>
 
             {/* Details card */}
-            <div className="rounded-2xl border bg-white p-6 sm:p-8 space-y-6">
+            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
 
                 <div className="flex flex-wrap items-center gap-3">
                     <span className={`rounded-full px-3 py-1 text-xs font-medium capitalize ${typeColor}`}>
@@ -144,46 +144,46 @@ export default function EventDetails({ id }: { id: string }) {
 
                 {event.description && (
                     <div>
-                        <h2 className="font-semibold text-gray-800 text-lg mb-2">Description</h2>
-                        <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">{event.description}</p>
+                        <h2 className="font-bold text-[#0A0A0A] text-lg mb-2">Description</h2>
+                        <p className="text-[#6B7280] leading-relaxed whitespace-pre-wrap">{event.description}</p>
                     </div>
                 )}
 
-                <div className="grid sm:grid-cols-2 gap-6 border-t py-6">
+                <div className="grid sm:grid-cols-2 gap-6 border-t border-[#E5E7EB] py-6">
 
-                    <div className="flex items-center gap-3 text-gray-600">
-                        <Calendar size={18} className="text-gray-400 shrink-0" />
+                    <div className="flex items-center gap-3 text-[#6B7280]">
+                        <Calendar size={18} className="text-[#9CA3AF] shrink-0" />
                         <div className="text-sm">
-                            <span className="block text-xs text-gray-400">Date</span>
-                            <span className="font-medium text-black">{formatFullDate(event.startTime)}</span>
+                            <span className="block text-xs font-medium text-[#9CA3AF]">Date</span>
+                            <span className="font-medium text-[#0A0A0A]">{formatFullDate(event.startTime)}</span>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 text-gray-600">
-                        <Clock size={18} className="text-gray-400 shrink-0" />
+                    <div className="flex items-center gap-3 text-[#6B7280]">
+                        <Clock size={18} className="text-[#9CA3AF] shrink-0" />
                         <div className="text-sm">
-                            <span className="block text-xs text-gray-400">Time</span>
-                            <span className="font-medium text-black">
+                            <span className="block text-xs font-medium text-[#9CA3AF]">Time</span>
+                            <span className="font-medium text-[#0A0A0A]">
                                 {event.allDay ? "All Day Event" : `${formatTime(event.startTime)} – ${formatTime(event.endTime)}`}
                             </span>
                         </div>
                     </div>
 
                     {event.location && (
-                        <div className="flex items-center gap-3 text-gray-600">
-                            <MapPin size={18} className="text-gray-400 shrink-0" />
+                        <div className="flex items-center gap-3 text-[#6B7280]">
+                            <MapPin size={18} className="text-[#9CA3AF] shrink-0" />
                             <div className="text-sm">
-                                <span className="block text-xs text-gray-400">Location</span>
-                                <span className="font-medium text-black truncate max-w-xs block">{event.location}</span>
+                                <span className="block text-xs font-medium text-[#9CA3AF]">Location</span>
+                                <span className="font-medium text-[#0A0A0A] truncate max-w-xs block">{event.location}</span>
                             </div>
                         </div>
                     )}
 
-                    <div className="flex items-center gap-3 text-gray-600">
-                        <Bell size={18} className="text-gray-400 shrink-0" />
+                    <div className="flex items-center gap-3 text-[#6B7280]">
+                        <Bell size={18} className="text-[#9CA3AF] shrink-0" />
                         <div className="text-sm">
-                            <span className="block text-xs text-gray-400">Reminder</span>
-                            <span className="font-medium text-black">
+                            <span className="block text-xs font-medium text-[#9CA3AF]">Reminder</span>
+                            <span className="font-medium text-[#0A0A0A]">
                                 {event.reminderEnabled
                                     ? `Set for ${event.reminderMinutesBefore || 30} minutes before`
                                     : "No reminders set"}
@@ -198,13 +198,13 @@ export default function EventDetails({ id }: { id: string }) {
             {/* Delete confirm dialog */}
             {showDelete && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/40" onClick={() => setShowDelete(false)} />
-                    <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl">
-                        <h2 className="text-center text-xl font-bold">Delete Event?</h2>
-                        <p className="mt-3 text-center text-sm text-gray-500">This action cannot be undone.</p>
+                    <div className="absolute inset-0 bg-[#0A0A0A]/40 backdrop-blur-sm" onClick={() => setShowDelete(false)} />
+                    <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white border border-[#E5E7EB] p-8 shadow-2xl">
+                        <h2 className="text-center text-xl font-bold text-[#0A0A0A]">Delete Event?</h2>
+                        <p className="mt-3 text-center text-sm font-medium text-[#6B7280]">This action cannot be undone.</p>
                         <div className="mt-6 flex gap-3">
-                            <button onClick={() => setShowDelete(false)} className="flex-1 h-11 rounded-xl border hover:bg-gray-50 transition">Cancel</button>
-                            <button onClick={handleDelete} disabled={deleting} className="flex-1 h-11 rounded-xl bg-red-600 text-white hover:bg-red-700 transition disabled:opacity-50">
+                            <button onClick={() => setShowDelete(false)} className="flex-1 h-11 rounded-xl border border-[#E5E7EB] bg-white font-medium text-[#0A0A0A] hover:bg-gray-50 transition shadow-sm">Cancel</button>
+                            <button onClick={handleDelete} disabled={deleting} className="flex-1 h-11 rounded-xl bg-red-600 font-medium text-white hover:bg-red-700 transition shadow-sm disabled:opacity-50">
                                 {deleting ? "Deleting..." : "Delete"}
                             </button>
                         </div>

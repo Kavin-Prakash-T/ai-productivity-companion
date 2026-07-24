@@ -24,19 +24,19 @@ export default function HabitStats({ habit }: Props) {
             icon: Flame,
             label: "Current Streak",
             value: `${habit.currentStreak}d`,
-            color: habit.currentStreak > 0 ? "text-orange-500" : "text-gray-400",
+            color: habit.currentStreak > 0 ? "text-orange-500" : "text-[#D1D5DB]",
         },
         {
             icon: TrendingUp,
             label: "Longest Streak",
             value: `${habit.longestStreak}d`,
-            color: "text-black",
+            color: "text-[#0A0A0A]",
         },
         {
             icon: CheckSquare,
             label: "Total Check-ins",
             value: habit.totalCompletions,
-            color: "text-black",
+            color: "text-[#0A0A0A]",
         },
     ];
 
@@ -50,14 +50,14 @@ export default function HabitStats({ habit }: Props) {
                 return (
                     <div
                         key={stat.label}
-                        className="rounded-2xl border bg-white p-5 text-center"
+                        className="rounded-2xl border border-[#E5E7EB] bg-white p-5 text-center shadow-sm"
                     >
 
                         <Icon size={24} className={`mx-auto mb-2 ${stat.color}`} />
 
-                        <div className="text-2xl font-bold">{stat.value}</div>
+                        <div className="text-2xl font-bold text-[#0A0A0A]">{stat.value}</div>
 
-                        <div className="mt-1 text-xs text-gray-500">{stat.label}</div>
+                        <div className="mt-1 text-xs font-medium text-[#6B7280]">{stat.label}</div>
 
                     </div>
                 );

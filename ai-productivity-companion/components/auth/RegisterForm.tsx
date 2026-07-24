@@ -91,16 +91,13 @@ export default function RegisterForm() {
             <div className="space-y-5">
                 {/* Name */}
                 <div className="relative">
-                    <User
-                        size={20}
-                        className="absolute left-4 top-3.5 text-gray-500"
-                    />
+                   
 
                     <input
                         type="text"
                         name="name"
                         placeholder="Full Name"
-                        className="h-12 w-full rounded-xl border border-gray-300 pl-12 pr-4 focus:border-black"
+                        className="h-12 w-full rounded-xl border border-[#E5E7EB] bg-white pl-12 pr-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         value={formData.name}
                         onChange={handleChange}
                     />
@@ -108,16 +105,13 @@ export default function RegisterForm() {
 
                 {/* Email */}
                 <div className="relative">
-                    <Mail
-                        size={20}
-                        className="absolute left-4 top-3.5 text-gray-500"
-                    />
+                    
 
                     <input
                         type="email"
                         name="email"
                         placeholder="Email Address"
-                        className="h-12 w-full rounded-xl border border-gray-300 pl-12 pr-4 focus:border-black"
+                        className="h-12 w-full rounded-xl border border-[#E5E7EB] bg-white pl-12 pr-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         value={formData.email}
                         onChange={handleChange}
                     />
@@ -125,16 +119,12 @@ export default function RegisterForm() {
 
                 {/* Password */}
                 <div className="relative">
-                    <Lock
-                        size={20}
-                        className="absolute left-4 top-3.5 text-gray-500"
-                    />
-
+                    
                     <input
                         type={showPassword ? "text" : "password"}
                         name="password"
                         placeholder="Password"
-                        className="h-12 w-full rounded-xl border border-gray-300 pl-12 pr-12 focus:border-black"
+                        className="h-12 w-full rounded-xl border border-[#E5E7EB] bg-white pl-12 pr-12 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         value={formData.password}
                         onChange={handleChange}
                     />
@@ -144,22 +134,18 @@ export default function RegisterForm() {
                         onClick={() =>
                             setShowPassword(!showPassword)
                         }
-                        className="absolute right-4 top-3"
+                        className="absolute right-4 top-3.5 text-[#9CA3AF] hover:text-[#0A0A0A] transition-colors"
                     >
                         {showPassword ? (
-                            <EyeOff size={20} />
+                            <EyeOff size={18} />
                         ) : (
-                            <Eye size={20} />
+                            <Eye size={18} />
                         )}
                     </button>
                 </div>
 
                 {/* Confirm Password */}
                 <div className="relative">
-                    <Lock
-                        size={20}
-                        className="absolute left-4 top-3.5 text-gray-500"
-                    />
 
                     <input
                         type={
@@ -167,7 +153,7 @@ export default function RegisterForm() {
                         }
                         name="confirmPassword"
                         placeholder="Confirm Password"
-                        className="h-12 w-full rounded-xl border border-gray-300 pl-12 pr-12 focus:border-black"
+                        className="h-12 w-full rounded-xl border border-[#E5E7EB] bg-white pl-12 pr-12 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         value={formData.confirmPassword}
                         onChange={handleChange}
                     />
@@ -179,12 +165,12 @@ export default function RegisterForm() {
                                 !showConfirmPassword
                             )
                         }
-                        className="absolute right-4 top-3"
+                        className="absolute right-4 top-3.5 text-[#9CA3AF] hover:text-[#0A0A0A] transition-colors"
                     >
                         {showConfirmPassword ? (
-                            <EyeOff size={20} />
+                            <EyeOff size={18} />
                         ) : (
-                            <Eye size={20} />
+                            <Eye size={18} />
                         )}
                     </button>
                 </div>
@@ -197,11 +183,11 @@ export default function RegisterForm() {
                     disabled={loading}
                 />
 
-                <p className="text-center text-sm text-gray-600">
+                <p className="text-center text-sm text-[#6B7280]">
                     Already have an account?{" "}
                     <Link
                         href="/login"
-                        className="font-semibold text-black hover:underline"
+                        className="font-semibold text-[#0A0A0A] hover:underline transition-colors"
                     >
                         Login
                     </Link>

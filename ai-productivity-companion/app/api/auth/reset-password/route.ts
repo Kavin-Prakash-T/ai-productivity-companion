@@ -20,11 +20,11 @@ export async function POST(req: Request) {
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-      return errorResponse("User not found", 404);
+      return errorResponse("Invalid email or OTP", 400); // generic error
     }
 
     if (user.resetOtp !== otp) {
-      return errorResponse("Invalid OTP", 400);
+      return errorResponse("Invalid email or OTP", 400);
     }
 
     if (!user.resetOtpExpires || user.resetOtpExpires < new Date()) {

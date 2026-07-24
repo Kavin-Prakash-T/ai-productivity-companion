@@ -61,15 +61,11 @@ export default function LoginForm() {
         >
             <div className="space-y-5">
                 <div className="relative">
-                    <Mail
-                        className="absolute left-4 top-3.5"
-                        size={20}
-                    />
-
+                    
                     <input
                         type="email"
                         placeholder="Email"
-                        className="h-12 w-full rounded-xl border pl-12 pr-4"
+                        className="h-12 w-full rounded-xl border border-[#E5E7EB] bg-white pl-12 pr-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         value={email}
                         onChange={(e) =>
                             setEmail(e.target.value)
@@ -78,10 +74,6 @@ export default function LoginForm() {
                 </div>
 
                 <div className="relative">
-                    <Lock
-                        className="absolute left-4 top-3.5"
-                        size={20}
-                    />
 
                     <input
                         type={
@@ -90,7 +82,7 @@ export default function LoginForm() {
                                 : "password"
                         }
                         placeholder="Password"
-                        className="h-12 w-full rounded-xl border pl-12 pr-12"
+                        className="h-12 w-full rounded-xl border border-[#E5E7EB] bg-white pl-12 pr-12 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         value={password}
                         onChange={(e) =>
                             setPassword(e.target.value)
@@ -99,23 +91,23 @@ export default function LoginForm() {
 
                     <button
                         type="button"
-                        className="absolute right-4 top-3"
+                        className="absolute right-4 top-3.5 text-[#9CA3AF] hover:text-[#0A0A0A] transition-colors"
                         onClick={() =>
                             setShowPassword(!showPassword)
                         }
                     >
                         {showPassword ? (
-                            <EyeOff size={20} />
+                            <EyeOff size={18} />
                         ) : (
-                            <Eye size={20} />
+                            <Eye size={18} />
                         )}
                     </button>
                 </div>
 
                 <div className="text-right">
                     <Link
-                        href="/forgot-password"
-                        className="text-sm hover:underline"
+                        href="/forget-passoword"
+                        className="text-xs text-[#0A0A0A] font-medium hover:underline transition-colors"
                     >
                         Forgot Password?
                     </Link>
@@ -128,13 +120,14 @@ export default function LoginForm() {
                             : "Login"
                     }
                     onClick={handleLogin}
+                    disabled={loading}
                 />
 
-                <p className="text-center text-sm">
+                <p className="text-center text-sm text-[#6B7280]">
                     Don't have an account?{" "}
                     <Link
                         href="/register"
-                        className="font-semibold"
+                        className="font-semibold text-[#0A0A0A] hover:underline transition-colors"
                     >
                         Register
                     </Link>

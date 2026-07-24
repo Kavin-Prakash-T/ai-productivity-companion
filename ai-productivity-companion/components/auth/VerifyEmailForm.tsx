@@ -76,15 +76,15 @@ export default function VerifyEmailForm() {
       <div className="space-y-5">
 
         <div className="flex justify-center">
-          <div className="rounded-full bg-black p-4 text-white">
+          <div className="rounded-full bg-gray-100 border border-[#E5E7EB] p-4 text-[#0A0A0A]">
             <ShieldCheck size={28} />
           </div>
         </div>
 
-        <div className="rounded-xl border p-3 flex items-center gap-3">
-          <Mail size={18} />
+        <div className="rounded-xl border border-[#E5E7EB] bg-gray-50 p-3.5 flex items-center gap-3 text-[#0A0A0A]">
+          <Mail size={16} className="text-[#9CA3AF]" />
 
-          <span className="text-sm break-all">
+          <span className="text-sm break-all font-medium">
             {email}
           </span>
         </div>
@@ -92,10 +92,10 @@ export default function VerifyEmailForm() {
         <input
           type="text"
           maxLength={6}
-          placeholder="Enter 6-digit OTP"
+          placeholder="000000"
           value={otp}
           onChange={(e) => setOtp(e.target.value)}
-          className="h-12 w-full rounded-xl border border-gray-300 px-4 text-center text-xl tracking-[10px] focus:border-black"
+          className="h-12 w-full rounded-xl border border-[#E5E7EB] bg-white px-4 text-center text-xl tracking-[10px] text-[#0A0A0A] placeholder-[#D1D5DB] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
         />
 
         <Button
@@ -111,18 +111,18 @@ export default function VerifyEmailForm() {
         <button
           onClick={handleResend}
           disabled={resending}
-          className="w-full rounded-xl border border-black h-12 hover:bg-gray-100 transition"
+          className="w-full rounded-xl border border-[#E5E7EB] bg-white text-[#0A0A0A] hover:bg-gray-50 h-12 transition-all duration-200 font-medium shadow-sm"
         >
           {resending
             ? "Sending..."
             : "Resend OTP"}
         </button>
 
-        <p className="text-center text-sm text-gray-500">
+        <p className="text-center text-sm text-[#6B7280]">
           Wrong email?{" "}
           <Link
             href="/register"
-            className="font-semibold text-black hover:underline"
+            className="font-semibold text-[#0A0A0A] hover:underline transition-colors"
           >
             Register Again
           </Link>

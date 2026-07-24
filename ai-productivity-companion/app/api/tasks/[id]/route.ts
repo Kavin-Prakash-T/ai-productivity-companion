@@ -110,37 +110,53 @@ export async function PUT(
             );
         }
 
-        const allowedFields = [
-            "title",
-            "description",
-            "category",
-            "priority",
-            "status",
-            "dueDate",
-            "estimatedMinutes",
-            "reminderEnabled",
-            "reminderTime",
-        ];
-
         const updateData: Record<string, unknown> = {};
 
-        for (const field of allowedFields) {
-            if (body[field] !== undefined) {
-                updateData[field] = body[field];
+        // Title: validate and trim
+        if (body.title !== undefined) {
+            if (!body.title?.trim()) {
+                return errorResponse("Task title cannot be empty", 400);
             }
+            updateData.title = body.title.trim();
         }
 
+        // Other string fields
+        if (body.description !== undefined) {
+            updateData.description = body.description?.trim();
+        }
+        if (body.category !== undefined) {
+            updateData.category = body.category?.trim() || "General";
+        }
+
+        // Enum fields (already validated above)
+        if (body.priority !== undefined) {
+            updateData.priority = body.priority;
+        }
+        if (body.status !== undefined) {
+            updateData.status = body.status;
+        }
+
+        // Numeric field
+        if (body.estimatedMinutes !== undefined) {
+            updateData.estimatedMinutes = Number(body.estimatedMinutes);
+        }
+
+        // Boolean field
+        if (body.reminderEnabled !== undefined) {
+            updateData.reminderEnabled = Boolean(body.reminderEnabled);
+        }
+
+        // Date fields
         if (body.dueDate) {
             updateData.dueDate = new Date(body.dueDate);
         }
 
         if (body.reminderTime) {
-            updateData.reminderTime = new Date(
-                body.reminderTime
-            );
+            updateData.reminderTime = new Date(body.reminderTime);
             updateData.reminderSent = false;
         }
 
+        // completedAt lifecycle
         if (body.status === "completed") {
             updateData.completedAt = new Date();
         } else if (body.status) {

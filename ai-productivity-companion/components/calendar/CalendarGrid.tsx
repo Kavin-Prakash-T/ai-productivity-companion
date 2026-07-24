@@ -58,7 +58,7 @@ export default function CalendarGrid({ events, currentDate, selectedDay, onSelec
         <div className="space-y-4">
 
             {/* Day labels */}
-            <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium text-gray-400">
+            <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-[#6B7280] uppercase tracking-wider">
                 {WEEK_DAYS.map((d) => (
                     <div key={d} className="py-1">{d}</div>
                 ))}
@@ -85,14 +85,14 @@ export default function CalendarGrid({ events, currentDate, selectedDay, onSelec
                         <button
                             key={day}
                             onClick={() => onSelectDay(isSelected ? null : day)}
-                            className={`h-16 sm:h-24 rounded-xl border p-1.5 text-left transition hover:border-black ${isSelected ? "border-black bg-black/5" : "bg-white"
+                            className={`h-16 sm:h-24 rounded-xl border p-1.5 text-left transition group ${isSelected ? "border-[#0A0A0A] bg-gray-50 shadow-sm" : "border-[#E5E7EB] bg-white hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm"
                                 }`}
                         >
 
                             <span
                                 className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold ${isToday
-                                    ? "bg-black text-white"
-                                    : "text-gray-700"
+                                    ? "bg-[#0A0A0A] text-white shadow-sm"
+                                    : "text-[#0A0A0A] group-hover:text-black"
                                     }`}
                             >
                                 {day}
@@ -103,7 +103,7 @@ export default function CalendarGrid({ events, currentDate, selectedDay, onSelec
                                 {dayEvents.slice(0, 2).map((ev) => (
                                     <div
                                         key={ev._id}
-                                        className="truncate rounded text-xs leading-tight bg-black text-white px-1 py-0.5 hidden sm:block"
+                                        className="truncate rounded text-[10px] font-semibold leading-tight bg-gray-100 text-[#0A0A0A] border border-gray-200 px-1.5 py-0.5 hidden sm:block"
                                     >
                                         {ev.title}
                                     </div>
@@ -111,12 +111,12 @@ export default function CalendarGrid({ events, currentDate, selectedDay, onSelec
                                 {dayEvents.length > 0 && (
                                     <div className="sm:hidden flex gap-0.5">
                                         {dayEvents.slice(0, 3).map((_, i) => (
-                                            <div key={i} className="h-1 w-1 rounded-full bg-black" />
+                                            <div key={i} className="h-1 w-1 rounded-full bg-[#0A0A0A]" />
                                         ))}
                                     </div>
                                 )}
                                 {dayEvents.length > 2 && (
-                                    <p className="hidden sm:block text-xs text-gray-400">+{dayEvents.length - 2} more</p>
+                                    <p className="hidden sm:block text-[10px] font-bold text-[#6B7280] mt-0.5">+{dayEvents.length - 2} more</p>
                                 )}
                             </div>
 
@@ -129,14 +129,14 @@ export default function CalendarGrid({ events, currentDate, selectedDay, onSelec
 
             {/* Selected day events panel */}
             {selectedDay && (
-                <div className="rounded-2xl border bg-white p-5">
+                <div className="rounded-2xl border border-[#E5E7EB] bg-white p-5 shadow-md">
 
-                    <h3 className="font-semibold mb-3">
+                    <h3 className="font-bold text-sm text-[#0A0A0A] mb-3.5">
                         Events on {WEEK_DAYS[new Date(year, month, selectedDay).getDay()]}, {selectedDay}
                     </h3>
 
                     {selectedEvents.length === 0 ? (
-                        <p className="text-sm text-gray-400">No events on this day.</p>
+                        <p className="text-xs text-[#6B7280] font-medium">No events on this day.</p>
                     ) : (
                         <div className="space-y-3">
                             {selectedEvents.map((ev) => (

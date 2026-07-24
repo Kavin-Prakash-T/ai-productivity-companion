@@ -105,7 +105,7 @@ export default function GoalForm({ id }: Props) {
     if (fetching) {
         return (
             <div className="max-w-3xl mx-auto flex items-center justify-center py-20">
-                <Loader2 size={32} className="animate-spin text-gray-400" />
+                <Loader2 size={32} className="animate-spin text-[#0A0A0A]" />
             </div>
         );
     }
@@ -116,39 +116,39 @@ export default function GoalForm({ id }: Props) {
             <div className="flex items-center gap-3">
                 <Link
                     href={isEdit ? `/goals/${id}` : "/goals"}
-                    className="rounded-xl border p-2 hover:bg-gray-100 transition"
+                    className="rounded-xl border border-[#E5E7EB] bg-white p-2 text-[#6B7280] hover:bg-gray-50 hover:text-[#0A0A0A] transition-colors shadow-sm"
                 >
                     <ArrowLeft size={18} />
                 </Link>
                 <div>
-                    <h1 className="text-3xl font-bold">
+                    <h1 className="text-3xl font-bold text-[#0A0A0A]">
                         {isEdit ? "Edit Goal" : "Create Goal"}
                     </h1>
-                    <p className="text-gray-500 mt-1">
+                    <p className="text-[#6B7280] mt-1 text-sm font-medium">
                         {isEdit ? "Modify your goal details." : "Add a new goal to track your milestone progress."}
                     </p>
                 </div>
             </div>
 
-            <div className="rounded-2xl border bg-white p-8 space-y-6">
+            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-8 space-y-6 shadow-sm">
 
                 <div>
-                    <label className="mb-2 flex items-center gap-2 font-medium">
-                        <Target size={18} />
+                    <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
+                        <Target size={18} className="text-[#6B7280]" />
                         Goal Title
                     </label>
                     <input
                         name="title"
                         value={form.title}
                         onChange={handleChange}
-                        className="w-full h-12 rounded-xl border px-4 focus:border-black focus:ring-1 focus:ring-black transition"
+                        className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white px-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         placeholder="e.g. Run a Marathon"
                     />
                 </div>
 
                 <div>
-                    <label className="mb-2 flex items-center gap-2 font-medium">
-                        <FileText size={18} />
+                    <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
+                        <FileText size={18} className="text-[#6B7280]" />
                         Description
                     </label>
                     <textarea
@@ -156,14 +156,14 @@ export default function GoalForm({ id }: Props) {
                         name="description"
                         value={form.description}
                         onChange={handleChange}
-                        className="w-full rounded-xl border p-4 focus:border-black focus:ring-1 focus:ring-black transition"
+                        className="w-full rounded-xl border border-[#E5E7EB] bg-white p-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         placeholder="Details about this goal"
                     />
                 </div>
 
                 <div>
-                    <label className="mb-2 flex items-center gap-2 font-medium">
-                        <Calendar size={18} />
+                    <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
+                        <Calendar size={18} className="text-[#6B7280]" />
                         Target Date
                     </label>
                     <input
@@ -171,7 +171,7 @@ export default function GoalForm({ id }: Props) {
                         name="targetDate"
                         value={form.targetDate}
                         onChange={handleChange}
-                        className="w-full h-12 rounded-xl border px-4 focus:border-black focus:ring-1 focus:ring-black transition"
+                        className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white px-4 text-[#0A0A0A] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                     />
                 </div>
 

@@ -49,11 +49,11 @@ export default function UpcomingDeadlines({ tasks, goals, loading }: Props) {
     });
 
     return (
-        <div className="rounded-2xl border bg-white p-6">
+        <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6 shadow-sm">
 
             <div className="flex items-center justify-between mb-5">
-                <h2 className="text-xl font-semibold">Upcoming Deadlines</h2>
-                <span className="text-xs text-gray-400">Next 7 days</span>
+                <h2 className="text-lg font-bold text-[#0A0A0A]">Upcoming Deadlines</h2>
+                <span className="text-xs text-[#9CA3AF] font-medium">Next 7 days</span>
             </div>
 
             {loading ? (
@@ -61,39 +61,39 @@ export default function UpcomingDeadlines({ tasks, goals, loading }: Props) {
                     {[1, 2, 3].map((i) => <SkeletonListItem key={i} />)}
                 </div>
             ) : all.length === 0 ? (
-                <div className="py-10 text-center text-gray-400">
-                    <Calendar size={32} className="mx-auto mb-2" />
+                <div className="py-10 text-center text-[#9CA3AF]">
+                    <Calendar size={32} className="mx-auto mb-2 text-[#D1D5DB]" />
                     <p className="text-sm">No upcoming deadlines</p>
                 </div>
             ) : (
-                <div className="space-y-3">
+                <div className="space-y-2.5">
 
                     {all.slice(0, 5).map((item) => (
 
                         <Link
                             key={`${item.type}-${item.id}`}
                             href={item.href}
-                            className="flex items-center justify-between rounded-xl border p-3 hover:bg-gray-50 transition"
+                            className="flex items-center justify-between rounded-xl border border-[#E5E7EB] bg-gray-50 p-3 hover:bg-white hover:shadow-sm hover:border-gray-300 transition-all duration-200"
                         >
 
                             <div className="flex items-center gap-3 min-w-0">
 
-                                <div className="shrink-0 rounded-lg bg-gray-100 p-2">
+                                <div className="shrink-0 rounded-lg bg-white border border-[#E5E7EB] shadow-sm p-2 text-[#6B7280]">
                                     {item.type === "task" ? (
-                                        <AlertCircle size={16} />
+                                        <AlertCircle size={15} />
                                     ) : (
-                                        <Target size={16} />
+                                        <Target size={15} />
                                     )}
                                 </div>
 
                                 <div className="min-w-0">
-                                    <p className="text-sm font-medium truncate">{item.title}</p>
-                                    <p className="text-xs text-gray-400 capitalize mt-0.5">{item.type}</p>
+                                    <p className="text-sm font-semibold text-[#0A0A0A] truncate">{item.title}</p>
+                                    <p className="text-xs text-[#9CA3AF] font-medium capitalize mt-0.5">{item.type}</p>
                                 </div>
 
                             </div>
 
-                            <span className="ml-3 shrink-0 text-xs font-medium text-gray-500">
+                            <span className="ml-3 shrink-0 text-xs font-bold text-[#6B7280] bg-white border border-[#E5E7EB] shadow-sm px-2.5 py-1 rounded-lg">
                                 {formatDate(item.date)}
                             </span>
 

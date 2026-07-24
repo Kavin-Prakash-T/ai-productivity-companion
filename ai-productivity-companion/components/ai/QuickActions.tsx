@@ -17,9 +17,9 @@ interface Props {
 
 export default function QuickActions({ onAction }: Props) {
     return (
-        <div className="rounded-2xl border bg-white p-5">
+        <div className="rounded-2xl border border-[#E5E7EB] bg-white p-5 shadow-sm">
 
-            <p className="text-sm font-medium text-gray-500 mb-3">Quick Prompts</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280] mb-3">Quick Prompts</p>
 
             <div className="flex flex-wrap gap-2">
                 {QUICK_PROMPTS.map((prompt) => (

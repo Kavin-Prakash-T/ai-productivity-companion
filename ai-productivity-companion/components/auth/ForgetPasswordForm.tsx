@@ -53,14 +53,14 @@ export default function ForgotPasswordForm() {
                 <div className="relative">
 
                     <Mail
-                        className="absolute left-4 top-3.5 text-gray-500"
-                        size={20}
+                        className="absolute left-4 top-3.5 text-[#9CA3AF]"
+                        size={18}
                     />
 
                     <input
                         type="email"
                         placeholder="Email Address"
-                        className="w-full h-12 rounded-xl border border-gray-300 pl-12 pr-4 focus:border-black"
+                        className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white pl-12 pr-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         value={email}
                         onChange={(e) =>
                             setEmail(e.target.value)

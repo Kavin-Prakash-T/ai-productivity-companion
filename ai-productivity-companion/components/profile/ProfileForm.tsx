@@ -82,7 +82,7 @@ export default function ProfileForm() {
     if (loading) {
         return (
             <div className="max-w-3xl mx-auto flex items-center justify-center py-20">
-                <Loader2 size={32} className="animate-spin text-gray-400" />
+                <Loader2 size={32} className="animate-spin text-[#0A0A0A]" />
             </div>
         );
     }
@@ -93,17 +93,17 @@ export default function ProfileForm() {
             <div className="flex items-center gap-3">
                 <Link
                     href="/profile"
-                    className="rounded-xl border p-2 hover:bg-gray-100 transition"
+                    className="rounded-xl border border-[#E5E7EB] bg-white p-2 text-[#6B7280] hover:bg-gray-50 hover:text-[#0A0A0A] transition-colors shadow-sm"
                 >
                     <ArrowLeft size={18} />
                 </Link>
-                <h1 className="text-3xl font-bold">Edit Profile</h1>
+                <h1 className="text-3xl font-bold text-[#0A0A0A]">Edit Profile</h1>
             </div>
 
-            <div className="rounded-2xl border bg-white p-8 space-y-6">
+            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-8 space-y-6 shadow-sm">
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-[#0A0A0A] mb-2">
                         Full Name
                     </label>
                     <input
@@ -111,12 +111,12 @@ export default function ProfileForm() {
                         placeholder="Full Name"
                         value={form.name}
                         onChange={handleChange}
-                        className="w-full h-12 rounded-xl border px-4 focus:border-black focus:ring-1 focus:ring-black transition"
+                        className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white px-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-semibold text-[#0A0A0A] mb-2">
                         Email Address
                     </label>
                     <input
@@ -124,7 +124,7 @@ export default function ProfileForm() {
                         placeholder="Email"
                         value={form.email}
                         onChange={handleChange}
-                        className="w-full h-12 rounded-xl border px-4 focus:border-black focus:ring-1 focus:ring-black transition"
+                        className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white px-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                     />
                 </div>
 

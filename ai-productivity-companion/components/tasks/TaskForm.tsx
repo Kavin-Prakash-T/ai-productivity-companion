@@ -128,58 +128,58 @@ export default function TaskForm({ id }: Props) {
     if (fetching) {
         return (
             <div className="max-w-4xl mx-auto flex items-center justify-center py-20">
-                <Loader2 size={32} className="animate-spin text-gray-400" />
+                <Loader2 size={32} className="animate-spin text-[#0A0A0A]" />
             </div>
         );
     }
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto space-y-6 relative z-10">
 
             <div className="flex items-center gap-3">
                 <Link
                     href={isEdit ? `/tasks/${id}` : "/tasks"}
-                    className="rounded-xl border p-2 hover:bg-gray-100 transition"
+                    className="rounded-xl border border-[#E5E7EB] bg-white p-2 text-[#6B7280] hover:bg-gray-50 hover:text-[#0A0A0A] transition-colors shadow-sm"
                 >
-                    <ArrowLeft size={18} />
+                    <ArrowLeft size={16} />
                 </Link>
                 <div>
-                    <h1 className="text-3xl font-bold">
+                    <h1 className="text-3xl font-extrabold text-[#0A0A0A] tracking-tight">
                         {isEdit ? "Edit Task" : "Create Task"}
                     </h1>
-                    <p className="text-gray-500 mt-1">
+                    <p className="text-[#6B7280] mt-1 text-sm font-medium">
                         {isEdit ? "Modify your task configuration." : "Add a new task to your productivity system."}
                     </p>
                 </div>
             </div>
 
-            <div className="rounded-2xl border bg-white p-8 shadow-sm space-y-6">
+            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-8 shadow-sm space-y-6">
 
                 <div>
-                    <label className="mb-2 flex items-center gap-2 font-medium">
-                        <Type size={18} />
+                    <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
+                        <Type size={16} className="text-[#6B7280]" />
                         Title
                     </label>
                     <input
                         name="title"
                         value={formData.title}
                         onChange={handleChange}
-                        className="w-full h-12 rounded-xl border px-4 focus:border-black focus:ring-1 focus:ring-black transition"
+                        className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white px-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         placeholder="Task title"
                     />
                 </div>
 
                 <div>
-                    <label className="mb-2 flex items-center gap-2 font-medium">
-                        <FileText size={18} />
+                    <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
+                        <FileText size={16} className="text-[#6B7280]" />
                         Description
                     </label>
                     <textarea
-                        rows={5}
+                        rows={4}
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
-                        className="w-full rounded-xl border p-4 focus:border-black focus:ring-1 focus:ring-black transition"
+                        className="w-full rounded-xl border border-[#E5E7EB] bg-white p-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         placeholder="Task description"
                     />
                 </div>
@@ -187,15 +187,15 @@ export default function TaskForm({ id }: Props) {
                 <div className="grid md:grid-cols-2 gap-6">
 
                     <div>
-                        <label className="mb-2 flex items-center gap-2 font-medium">
-                            <Flag size={18} />
+                        <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
+                            <Flag size={16} className="text-[#6B7280]" />
                             Priority
                         </label>
                         <select
                             name="priority"
                             value={formData.priority}
                             onChange={handleChange}
-                            className="w-full h-12 rounded-xl border px-4 focus:border-black focus:ring-1 focus:ring-black transition"
+                            className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white px-4 text-[#0A0A0A] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         >
                             <option value="low">Low</option>
                             <option value="medium">Medium</option>
@@ -205,15 +205,15 @@ export default function TaskForm({ id }: Props) {
                     </div>
 
                     <div>
-                        <label className="mb-2 flex items-center gap-2 font-medium">
-                            <FolderOpen size={18} />
+                        <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
+                            <FolderOpen size={16} className="text-[#6B7280]" />
                             Category
                         </label>
                         <input
                             name="category"
                             value={formData.category}
                             onChange={handleChange}
-                            className="w-full h-12 rounded-xl border px-4 focus:border-black focus:ring-1 focus:ring-black transition"
+                            className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white px-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                             placeholder="Work / Study / Personal"
                         />
                     </div>
@@ -223,8 +223,8 @@ export default function TaskForm({ id }: Props) {
                 <div className="grid md:grid-cols-2 gap-6">
 
                     <div>
-                        <label className="mb-2 flex items-center gap-2 font-medium">
-                            <Calendar size={18} />
+                        <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
+                            <Calendar size={16} className="text-[#6B7280]" />
                             Due Date
                         </label>
                         <input
@@ -232,13 +232,13 @@ export default function TaskForm({ id }: Props) {
                             name="dueDate"
                             value={formData.dueDate}
                             onChange={handleChange}
-                            className="w-full h-12 rounded-xl border px-4 focus:border-black focus:ring-1 focus:ring-black transition"
+                            className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white px-4 text-[#0A0A0A] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 [color-scheme:light] shadow-sm"
                         />
                     </div>
 
                     <div>
-                        <label className="mb-2 flex items-center gap-2 font-medium">
-                            <Clock size={18} />
+                        <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
+                            <Clock size={16} className="text-[#6B7280]" />
                             Estimated Time (Minutes)
                         </label>
                         <input
@@ -247,19 +247,19 @@ export default function TaskForm({ id }: Props) {
                             value={formData.estimatedMinutes}
                             onChange={handleChange}
                             placeholder="120"
-                            className="w-full h-12 rounded-xl border px-4 focus:border-black focus:ring-1 focus:ring-black transition"
+                            className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white px-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                         />
                     </div>
 
                 </div>
 
                 {!isEdit && (
-                    <div className="rounded-xl border p-6 bg-gray-50">
-                        <div className="flex items-center gap-2 mb-3">
-                            <Sparkles size={20} />
-                            <h2 className="font-semibold">AI Suggestion</h2>
+                    <div className="rounded-xl border border-[#E5E7EB] bg-gray-50 p-6 shadow-sm">
+                        <div className="flex items-center gap-2 mb-2.5 text-[#0A0A0A]">
+                            <Sparkles size={16} className="animate-pulse-glow" />
+                            <h2 className="font-bold text-sm text-[#0A0A0A]">AI Plan Suggestion</h2>
                         </div>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-xs text-[#6B7280] leading-relaxed font-medium">
                             Click Generate after saving the task to let AI
                             create subtasks, estimate completion time and
                             recommend the best execution plan.
@@ -267,7 +267,7 @@ export default function TaskForm({ id }: Props) {
                     </div>
                 )}
 
-                <div className="flex justify-end">
+                <div className="flex justify-end pt-3">
                     <div className="w-48">
                         <Button
                             title={loading ? "Saving..." : isEdit ? "Update Task" : "Create Task"}

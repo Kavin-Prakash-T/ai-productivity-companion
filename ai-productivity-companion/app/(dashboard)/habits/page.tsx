@@ -91,15 +91,15 @@ export default function HabitsPage() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold">Habits</h1>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Habits</h1>
+                    <p className="mt-1 text-sm font-medium text-[#6B7280]">
                         {loading ? "Loading..." : `${completedCount} of ${habits.length} done today`}
                     </p>
                 </div>
 
                 <Link
                     href="/habits/create"
-                    className="inline-flex items-center gap-2 rounded-xl bg-black px-5 py-2.5 text-sm font-medium text-white hover:bg-neutral-800 transition"
+                    className="inline-flex items-center gap-2 rounded-xl bg-[#0A0A0A] px-5 py-2.5 text-sm font-medium text-white hover:bg-black/90 transition shadow-sm"
                 >
                     <Plus size={18} />
                     New Habit
@@ -140,20 +140,20 @@ export default function HabitsPage() {
             {/* Delete confirm */}
             {deleteId && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/40" onClick={() => setDeleteId(null)} />
-                    <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl">
+                    <div className="absolute inset-0 bg-[#0A0A0A]/40 backdrop-blur-sm" onClick={() => setDeleteId(null)} />
+                    <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white border border-[#E5E7EB] p-8 shadow-2xl">
                         <div className="flex items-center justify-center mb-5">
                             <div className="rounded-2xl bg-red-50 p-4">
                                 <Trash2 size={28} className="text-red-500" />
                             </div>
                         </div>
-                        <h2 className="text-center text-xl font-bold">Delete Habit?</h2>
-                        <p className="mt-2 text-center text-sm text-gray-500">
+                        <h2 className="text-center text-xl font-bold text-[#0A0A0A]">Delete Habit?</h2>
+                        <p className="mt-2 text-center text-sm font-medium text-[#6B7280]">
                             "{habitToDelete?.title}" and all streak data will be deleted.
                         </p>
                         <div className="mt-6 flex gap-3">
-                            <button onClick={() => setDeleteId(null)} className="flex-1 h-11 rounded-xl border hover:bg-gray-50 transition">Cancel</button>
-                            <button onClick={handleDelete} disabled={deleteLoading} className="flex-1 h-11 rounded-xl bg-red-600 text-white hover:bg-red-700 transition disabled:opacity-50">
+                            <button onClick={() => setDeleteId(null)} className="flex-1 h-11 rounded-xl border border-[#E5E7EB] bg-white font-medium text-[#0A0A0A] hover:bg-gray-50 transition shadow-sm">Cancel</button>
+                            <button onClick={handleDelete} disabled={deleteLoading} className="flex-1 h-11 rounded-xl bg-red-600 font-medium text-white hover:bg-red-700 transition shadow-sm disabled:opacity-50">
                                 {deleteLoading ? "Deleting..." : "Delete"}
                             </button>
                         </div>

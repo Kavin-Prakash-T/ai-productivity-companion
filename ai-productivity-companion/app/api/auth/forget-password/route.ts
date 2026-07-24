@@ -16,8 +16,9 @@ export async function POST(req: Request) {
 
     const user = await User.findOne({ email });
 
+    // Always return the same response to prevent user enumeration
     if (!user) {
-      return errorResponse("User not found", 404);
+      return successResponse("If that email exists, a reset OTP has been sent");
     }
 
     const otp = generateOtp();
@@ -39,7 +40,7 @@ export async function POST(req: Request) {
       `,
     });
 
-    return successResponse("Password reset OTP sent to email");
+    return successResponse("If that email exists, a reset OTP has been sent");
   } catch (error) {
     console.error("Forgot password error:", error);
     return errorResponse("Internal server error", 500);

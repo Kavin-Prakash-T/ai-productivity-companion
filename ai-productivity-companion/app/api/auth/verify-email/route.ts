@@ -12,7 +12,8 @@ export async function POST(req: Request) {
       return errorResponse("Email and OTP are required", 400);
     }
 
-    const user = await User.findOne({ email }).select("+password");
+    // Do NOT select +password — we don't need it here
+    const user = await User.findOne({ email });
 
     if (!user) {
       return errorResponse("User not found", 404);
@@ -22,12 +23,13 @@ export async function POST(req: Request) {
       return errorResponse("Email already verified", 400);
     }
 
-    if (user.emailOtp !== otp) {
-      return errorResponse("Invalid OTP", 400);
-    }
-
+    // Check expiry BEFORE comparing OTP to avoid unnecessary info leak
     if (!user.emailOtpExpires || user.emailOtpExpires < new Date()) {
       return errorResponse("OTP expired", 400);
+    }
+
+    if (user.emailOtp !== otp) {
+      return errorResponse("Invalid OTP", 400);
     }
 
     user.isVerified = true;

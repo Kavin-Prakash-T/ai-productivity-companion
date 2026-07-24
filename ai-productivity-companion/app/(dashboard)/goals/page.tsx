@@ -81,15 +81,15 @@ export default function GoalsPage() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold">Goals</h1>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Goals</h1>
+                    <p className="mt-1 text-sm font-medium text-[#6B7280]">
                         {loading ? "Loading..." : `${filtered.length} goal${filtered.length !== 1 ? "s" : ""}`}
                     </p>
                 </div>
 
                 <Link
                     href="/goals/create"
-                    className="inline-flex items-center gap-2 rounded-xl bg-black px-5 py-2.5 text-sm font-medium text-white hover:bg-neutral-800 transition"
+                    className="inline-flex items-center gap-2 rounded-xl bg-[#0A0A0A] px-5 py-2.5 text-sm font-medium text-white hover:bg-black/90 transition shadow-sm"
                 >
                     <Plus size={18} />
                     New Goal

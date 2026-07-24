@@ -30,9 +30,9 @@ export default function ProductivityChart({ data }: Props) {
     }));
 
     return (
-        <div className="rounded-2xl border bg-white p-6">
+        <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6 shadow-sm">
 
-            <h2 className="mb-5 text-xl font-semibold">
+            <h2 className="mb-5 text-lg font-bold text-[#0A0A0A]">
                 Weekly Activity
             </h2>
 
@@ -42,19 +42,20 @@ export default function ProductivityChart({ data }: Props) {
 
                         <CartesianGrid
                             strokeDasharray="3 3"
-                            stroke="#f0f0f0"
+                            stroke="#E5E7EB"
+                            opacity={0.8}
                         />
 
                         <XAxis
                             dataKey="day"
-                            tick={{ fontSize: 12 }}
+                            tick={{ fontSize: 11, fill: "#9CA3AF" }}
                             axisLine={false}
                             tickLine={false}
                         />
 
                         <YAxis
                             allowDecimals={false}
-                            tick={{ fontSize: 12 }}
+                            tick={{ fontSize: 11, fill: "#9CA3AF" }}
                             axisLine={false}
                             tickLine={false}
                             width={25}
@@ -63,41 +64,46 @@ export default function ProductivityChart({ data }: Props) {
                         <Tooltip
                             contentStyle={{
                                 borderRadius: "12px",
-                                border: "1px solid #e5e7eb",
-                                boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                                border: "1px solid #E5E7EB",
+                                background: "rgba(255, 255, 255, 0.95)",
+                                backdropFilter: "blur(12px)",
+                                boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+                                color: "#0A0A0A",
                             }}
+                            itemStyle={{ color: "#0A0A0A" }}
+                            labelStyle={{ color: "#6B7280", fontWeight: "bold", fontSize: "12px" }}
                         />
 
                         <Line
                             type="monotone"
                             dataKey="Tasks"
-                            stroke="#000000"
-                            strokeWidth={2}
-                            dot={{ r: 4, fill: "#000" }}
-                            activeDot={{ r: 6 }}
+                            stroke="#0A0A0A"
+                            strokeWidth={2.5}
+                            dot={{ r: 4, fill: "#0A0A0A", strokeWidth: 0 }}
+                            activeDot={{ r: 6, strokeWidth: 0, fill: "#0A0A0A" }}
                         />
 
                         <Line
                             type="monotone"
                             dataKey="Habits"
-                            stroke="#6b7280"
-                            strokeWidth={2}
+                            stroke="#9CA3AF"
+                            strokeWidth={2.5}
                             strokeDasharray="4 4"
-                            dot={{ r: 4, fill: "#6b7280" }}
-                            activeDot={{ r: 6 }}
+                            dot={{ r: 4, fill: "#9CA3AF", strokeWidth: 0 }}
+                            activeDot={{ r: 6, strokeWidth: 0, fill: "#9CA3AF" }}
                         />
 
                     </LineChart>
                 </ResponsiveContainer>
             </div>
 
-            <div className="mt-3 flex gap-6 text-sm text-gray-500">
+            <div className="mt-4 flex gap-6 text-xs font-semibold text-[#6B7280]">
                 <div className="flex items-center gap-2">
-                    <div className="h-0.5 w-6 bg-black" />
+                    <div className="h-1.5 w-4 rounded-full bg-[#0A0A0A]" />
                     Tasks Completed
                 </div>
                 <div className="flex items-center gap-2">
-                    <div className="h-0.5 w-6 bg-gray-400 border-dashed border-t-2" />
+                    <div className="h-1.5 w-4 rounded-full bg-[#9CA3AF] border-dashed border-t" />
                     Habits Done
                 </div>
             </div>

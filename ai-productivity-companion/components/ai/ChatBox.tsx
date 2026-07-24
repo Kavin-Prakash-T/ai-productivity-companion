@@ -68,18 +68,18 @@ export default function ChatBox() {
         .pop();
 
     return (
-        <div className="mx-auto max-w-4xl space-y-4">
+        <div className="mx-auto max-w-4xl space-y-4 relative z-10">
 
             {/* Title */}
             <div className="flex items-center gap-3">
 
-                <div className="rounded-2xl bg-black p-2.5 text-white">
-                    <Bot size={24} />
+                <div className="rounded-2xl bg-[#0A0A0A] border border-[#0A0A0A] p-2.5 text-white shadow-sm">
+                    <Bot size={22} />
                 </div>
 
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold">AI Assistant</h1>
-                    <p className="text-sm text-gray-500">Plan, prioritize and organize your work.</p>
+                    <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0A0A0A]">AI Assistant</h1>
+                    <p className="text-sm font-medium text-[#6B7280]">Plan, prioritize and organize your work.</p>
                 </div>
 
             </div>
@@ -88,7 +88,7 @@ export default function ChatBox() {
             <QuickActions onAction={handleQuickAction} />
 
             {/* Chat area */}
-            <div className="rounded-2xl border bg-white overflow-hidden">
+            <div className="rounded-2xl border border-[#E5E7EB] bg-white overflow-hidden shadow-sm">
 
                 {/* Messages */}
                 <div
@@ -132,7 +132,7 @@ export default function ChatBox() {
                 </div>
 
                 {/* Input */}
-                <div className="border-t p-4">
+                <div className="border-t border-[#E5E7EB] p-4">
                     <ChatInput
                         onSend={handleSend}
                         onResponse={handleResponse}
