@@ -91,7 +91,10 @@ export default function RegisterForm() {
             <div className="space-y-5">
                 {/* Name */}
                 <div className="relative">
-                   
+                    <User
+                        size={18}
+                        className="absolute left-4 top-3.5 text-[#9CA3AF]"
+                    />
 
                     <input
                         type="text"
@@ -105,7 +108,10 @@ export default function RegisterForm() {
 
                 {/* Email */}
                 <div className="relative">
-                    
+                    <Mail
+                        size={18}
+                        className="absolute left-4 top-3.5 text-[#9CA3AF]"
+                    />
 
                     <input
                         type="email"
@@ -119,7 +125,10 @@ export default function RegisterForm() {
 
                 {/* Password */}
                 <div className="relative">
-                    
+                    <Lock
+                        size={18}
+                        className="absolute left-4 top-3.5 text-[#9CA3AF]"
+                    />
                     <input
                         type={showPassword ? "text" : "password"}
                         name="password"
@@ -146,7 +155,10 @@ export default function RegisterForm() {
 
                 {/* Confirm Password */}
                 <div className="relative">
-
+                    <Lock
+                        size={18}
+                        className="absolute left-4 top-3.5 text-[#9CA3AF]"
+                    />
                     <input
                         type={
                             showConfirmPassword ? "text" : "password"

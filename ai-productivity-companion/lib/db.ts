@@ -1,4 +1,12 @@
 import mongoose from "mongoose";
+import dns from "dns";
+
+// Bypass restrictive DNS resolvers that block MongoDB Atlas SRV lookup
+try {
+  dns.setServers(["8.8.8.8", "1.1.1.1"]);
+} catch (error) {
+  console.warn("Unable to set public DNS servers:", error);
+}
 
 const MONGODB_URI = process.env.MONGODB_URI as string;
 

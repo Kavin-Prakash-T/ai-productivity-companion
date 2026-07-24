@@ -61,7 +61,10 @@ export default function LoginForm() {
         >
             <div className="space-y-5">
                 <div className="relative">
-                    
+                    <Mail
+                        size={18}
+                        className="absolute left-4 top-3.5 text-[#9CA3AF]"
+                    />
                     <input
                         type="email"
                         placeholder="Email"
@@ -74,7 +77,10 @@ export default function LoginForm() {
                 </div>
 
                 <div className="relative">
-
+                    <Lock
+                        size={18}
+                        className="absolute left-4 top-3.5 text-[#9CA3AF]"
+                    />
                     <input
                         type={
                             showPassword

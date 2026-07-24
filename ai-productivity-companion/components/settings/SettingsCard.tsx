@@ -6,15 +6,15 @@ import {
 
 export default function SettingsCard() {
     return (
-        <div className="rounded-2xl border border-zinc-800/60 bg-zinc-900/10 p-6 backdrop-blur-md shadow-lg">
+        <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
 
             <Link
                 href="/settings/password"
-                className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/10 p-4 text-zinc-200 hover:bg-zinc-850/40 hover:border-zinc-700/60 transition-all duration-200 font-semibold"
+                className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white p-4 text-zinc-950 hover:bg-zinc-50 hover:border-zinc-300 transition-all duration-200 font-semibold"
             >
                 <div className="flex items-center gap-3">
 
-                    <Lock size={18} className="text-zinc-400" />
+                    <Lock size={18} className="text-zinc-500" />
 
                     <span>Change Password</span>
 
@@ -24,11 +24,11 @@ export default function SettingsCard() {
 
             <Link
                 href="/settings/preferences"
-                className="mt-4 flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/10 p-4 text-zinc-200 hover:bg-zinc-850/40 hover:border-zinc-700/60 transition-all duration-200 font-semibold"
+                className="mt-4 flex items-center justify-between rounded-xl border border-zinc-200 bg-white p-4 text-zinc-950 hover:bg-zinc-50 hover:border-zinc-300 transition-all duration-200 font-semibold"
             >
                 <div className="flex items-center gap-3">
 
-                    <SlidersHorizontal size={18} className="text-zinc-400" />
+                    <SlidersHorizontal size={18} className="text-zinc-500" />
 
                     <span>Preferences</span>
 
