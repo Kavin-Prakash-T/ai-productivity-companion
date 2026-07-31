@@ -1,4 +1,5 @@
 import { connectDB } from "@/lib/db";
+import { generateToken } from "@/lib/auth";
 import User from "@/models/User";
 import { successResponse, errorResponse } from "@/utils/apiResponse";
 
@@ -38,7 +39,19 @@ export async function POST(req: Request) {
 
     await user.save();
 
-    return successResponse("Email verified successfully");
+    const token = generateToken({
+      userId: user._id.toString(),
+      email: user.email,
+    });
+
+    return successResponse("Email verified successfully", {
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (error) {
     console.error("Verify email error:", error);
     return errorResponse("Internal server error", 500);

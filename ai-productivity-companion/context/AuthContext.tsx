@@ -37,13 +37,26 @@ export function AuthProvider({
         const savedUser = localStorage.getItem("user");
 
         if (token && savedUser) {
-            setUser(JSON.parse(savedUser));
+            try {
+                setUser(JSON.parse(savedUser));
+            } catch {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                setUser(null);
+            }
+        } else if (!token || !savedUser) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
         }
 
         setLoading(false);
     }, []);
 
     function login(token: string, user: User) {
+        if (!token || !user) {
+            throw new Error("Invalid auth session data");
+        }
+
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
 

@@ -39,7 +39,7 @@ export default function LoginForm() {
                 password,
             });
 
-            login(data.token, data.user);
+            login(data.data.token, data.data.user);
 
             toast.success(data.message);
 

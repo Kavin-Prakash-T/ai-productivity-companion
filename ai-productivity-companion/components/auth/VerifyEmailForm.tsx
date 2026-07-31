@@ -12,10 +12,12 @@ import {
   verifyEmail,
   registerUser,
 } from "@/services/authService";
+import { useAuth } from "@/context/AuthContext";
 
 export default function VerifyEmailForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { login } = useAuth();
 
   const email = searchParams.get("email") || "";
 
@@ -36,9 +38,11 @@ export default function VerifyEmailForm() {
         otp,
       });
 
+      login(data.data.token, data.data.user);
+
       toast.success(data.message);
 
-      router.push("/login");
+      router.push("/dashboard");
     } catch (error: any) {
       toast.error(
         error.response?.data?.message ||
