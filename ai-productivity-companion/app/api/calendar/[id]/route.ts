@@ -86,7 +86,7 @@ export async function PUT(request: Request, context: RouteContext) {
         const event = await CalendarEvent.findOneAndUpdate(
             { _id: id, user: authUser.userId },
             updateData,
-            { new: true, runValidators: true }
+            { returnDocument: "after", runValidators: true }
         );
 
         if (!event) {

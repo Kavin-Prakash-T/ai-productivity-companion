@@ -72,7 +72,7 @@ export async function PATCH(
                         : undefined,
             },
             {
-                new: true,
+                returnDocument: "after",
                 runValidators: true,
             }
         );

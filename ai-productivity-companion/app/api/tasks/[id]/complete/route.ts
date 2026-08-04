@@ -1,11 +1,8 @@
 import mongoose from "mongoose";
 import { connectDB } from "@/lib/db";
 import { getAuthUser } from "@/lib/getAuthUser";
-import Task, { TaskStatus } from "@/models/Task";
-import {
-    errorResponse,
-    successResponse,
-} from "@/utils/apiResponse";
+import Task from "@/models/Task";
+import { errorResponse, successResponse } from "@/utils/apiResponse";
 
 type RouteContext = {
     params: Promise<{
@@ -22,22 +19,9 @@ export async function PATCH(
 
         const authUser = getAuthUser(request);
         const { id } = await context.params;
-        const { status } = await request.json();
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return errorResponse("Invalid task ID", 400);
-        }
-
-        const validStatuses: TaskStatus[] = [
-            "pending",
-            "in-progress",
-            "completed",
-            "missed",
-            "cancelled",
-        ];
-
-        if (!validStatuses.includes(status)) {
-            return errorResponse("Invalid task status", 400);
         }
 
         const task = await Task.findOneAndUpdate(
@@ -46,9 +30,8 @@ export async function PATCH(
                 user: authUser.userId,
             },
             {
-                status,
-                completedAt:
-                    status === "completed" ? new Date() : undefined,
+                status: "completed",
+                completedAt: new Date(),
             },
             {
                 returnDocument: "after",
@@ -61,11 +44,11 @@ export async function PATCH(
         }
 
         return successResponse(
-            "Task status updated successfully",
+            "Task marked as completed successfully",
             { task }
         );
     } catch (error) {
-        console.error("Update task status error:", error);
+        console.error("Complete task error:", error);
 
         if (
             error instanceof Error &&

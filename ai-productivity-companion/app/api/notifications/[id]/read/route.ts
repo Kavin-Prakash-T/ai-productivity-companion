@@ -40,7 +40,7 @@ export async function PATCH(
                     isRead: true,
                 },
                 {
-                    new: true,
+                    returnDocument: "after",
                 }
             );
 

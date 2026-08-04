@@ -170,7 +170,7 @@ export async function PUT(
             },
             updateData,
             {
-                new: true,
+                returnDocument: "after",
                 runValidators: true,
             }
         );
