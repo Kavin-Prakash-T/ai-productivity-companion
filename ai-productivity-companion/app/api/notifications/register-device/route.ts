@@ -32,7 +32,7 @@ export async function POST(request: Request) {
                 },
             },
             {
-                new: true,
+                returnDocument: "after",
             }
         ).select("name email fcmTokens");
 
@@ -89,7 +89,7 @@ export async function DELETE(request: Request) {
                 },
             },
             {
-                new: true,
+                returnDocument: "after",
             }
         ).select("fcmTokens");
 
