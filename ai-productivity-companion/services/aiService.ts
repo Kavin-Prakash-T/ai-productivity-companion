@@ -12,5 +12,5 @@ export const generateSchedule = () =>
 export const productivityInsights = () =>
     api.get("/ai/insights");
 
-export const breakTask = (taskId: string) =>
-    api.post(`/ai/break-task/${taskId}`);
+export const breakTask = (taskId: string, saveSubtasks: boolean = true) =>
+    api.post("/ai/breakdown", { taskId, saveSubtasks });

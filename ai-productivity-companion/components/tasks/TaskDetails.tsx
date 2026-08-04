@@ -15,13 +15,22 @@ import {
     CheckCircle2,
     ArrowLeft,
     Loader2,
+    Sparkles,
+    Circle,
+    Plus,
 } from "lucide-react";
 
 import {
     getTask,
     completeTask,
     deleteTask,
+    getSubtasks,
+    createSubtask,
+    updateSubtask,
+    deleteSubtask,
 } from "@/services/taskService";
+
+import { breakTask } from "@/services/aiService";
 
 import PriorityBadge from "./PriorityBadge";
 import ErrorState from "@/components/common/ErrorState";
@@ -57,16 +66,94 @@ export default function TaskDetails({ id }: { id: string }) {
     const [deleting, setDeleting] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
 
+    const [subtasks, setSubtasks] = useState<any[]>([]);
+    const [newSubtaskTitle, setNewSubtaskTitle] = useState("");
+    const [addingSubtask, setAddingSubtask] = useState(false);
+    const [breakingTask, setBreakingTask] = useState(false);
+
     async function loadTask() {
         setLoading(true);
         setError(null);
         try {
             const { data } = await getTask(id);
-            setTask(data.data?.task ?? data.task);
+            const loadedTask = data.data?.task ?? data.task;
+            setTask(loadedTask);
+            setSubtasks(loadedTask?.subtasks ?? []);
         } catch {
             setError("Failed to load task details");
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function handleToggleSubtask(subtaskId: string, currentCompleted: boolean) {
+        try {
+            const updatedCompleted = !currentCompleted;
+            // Optimistic UI update
+            setSubtasks(prev =>
+                prev.map(st =>
+                    st._id === subtaskId ? { ...st, completed: updatedCompleted } : st
+                )
+            );
+            await updateSubtask(id, subtaskId, { completed: updatedCompleted });
+        } catch {
+            toast.error("Failed to update subtask");
+            // Revert on error
+            setSubtasks(prev =>
+                prev.map(st =>
+                    st._id === subtaskId ? { ...st, completed: currentCompleted } : st
+                )
+            );
+        }
+    }
+
+    async function handleAddSubtask(e: React.FormEvent) {
+        e.preventDefault();
+        if (!newSubtaskTitle.trim()) return;
+        setAddingSubtask(true);
+        try {
+            const { data } = await createSubtask(id, newSubtaskTitle.trim());
+            const updatedTask = data.data?.task ?? data.task;
+            setSubtasks(updatedTask.subtasks || []);
+            setNewSubtaskTitle("");
+            toast.success("Subtask added");
+        } catch {
+            toast.error("Failed to add subtask");
+        } finally {
+            setAddingSubtask(false);
+        }
+    }
+
+    async function handleDeleteSubtask(subtaskId: string) {
+        try {
+            setSubtasks(prev => prev.filter(st => st._id !== subtaskId));
+            await deleteSubtask(id, subtaskId);
+            toast.success("Subtask deleted");
+        } catch {
+            toast.error("Failed to delete subtask");
+            // Revert
+            const { data } = await getTask(id);
+            const loadedTask = data.data?.task ?? data.task;
+            setSubtasks(loadedTask?.subtasks ?? []);
+        }
+    }
+
+    async function handleAiBreakdown() {
+        setBreakingTask(true);
+        const toastId = toast.loading("AI is generating task breakdown...");
+        try {
+            const { data } = await breakTask(id, true);
+            toast.success(data.message || "Task broken down successfully!", { id: toastId });
+            // Reload task details and subtasks
+            const { data: updatedData } = await getTask(id);
+            const loadedTask = updatedData.data?.task ?? updatedData.task;
+            setTask(loadedTask);
+            setSubtasks(loadedTask?.subtasks ?? []);
+        } catch (err: any) {
+            console.error(err);
+            toast.error("Failed to generate AI breakdown", { id: toastId });
+        } finally {
+            setBreakingTask(false);
         }
     }
 
@@ -200,6 +287,87 @@ export default function TaskDetails({ id }: { id: string }) {
                         </div>
                     </div>
 
+                </div>
+
+                {/* Subtasks Section */}
+                <div className="border-t border-[#E5E7EB] pt-6 space-y-4">
+                    <div className="flex items-center justify-between">
+                        <h3 className="font-bold text-[#0A0A0A] text-lg flex items-center gap-2">
+                            Subtasks
+                            {subtasks.length > 0 && (
+                                <span className="text-xs bg-gray-100 text-[#6B7280] px-2.5 py-1 rounded-full font-semibold">
+                                    {subtasks.filter(st => st.completed).length}/{subtasks.length}
+                                </span>
+                            )}
+                        </h3>
+                        <button
+                            onClick={handleAiBreakdown}
+                            disabled={breakingTask}
+                            className="flex items-center gap-1.5 text-xs font-semibold text-[#0A0A0A] border border-[#E5E7EB] rounded-xl px-3 py-2 bg-white hover:bg-gray-50 transition shadow-sm disabled:opacity-50"
+                        >
+                            <Sparkles size={13} className="text-[#0A0A0A]" />
+                            {breakingTask ? "Generating..." : "AI Breakdown"}
+                        </button>
+                    </div>
+
+                    {subtasks.length === 0 ? (
+                        <p className="text-sm text-[#9CA3AF] font-medium py-2">No subtasks created yet. Click "AI Breakdown" to generate steps or add one below.</p>
+                    ) : (
+                        <div className="space-y-1 bg-gray-50/50 rounded-xl p-3 border border-[#E5E7EB]/50">
+                            {subtasks.map((subtask) => (
+                                <div
+                                    key={subtask._id}
+                                    className="flex items-center justify-between group rounded-xl border border-transparent hover:border-[#E5E7EB] hover:bg-white p-2.5 transition duration-200"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <button
+                                            onClick={() => handleToggleSubtask(subtask._id, subtask.completed)}
+                                            className="text-[#9CA3AF] hover:text-[#0A0A0A] transition shrink-0"
+                                        >
+                                            {subtask.completed ? (
+                                                <CheckCircle2 size={18} className="text-[#0A0A0A]" />
+                                            ) : (
+                                                <Circle size={18} />
+                                            )}
+                                        </button>
+                                        <span
+                                            className={`text-sm font-medium ${
+                                                subtask.completed
+                                                    ? "line-through text-[#9CA3AF]"
+                                                    : "text-[#374151]"
+                                            }`}
+                                        >
+                                            {subtask.title}
+                                        </span>
+                                    </div>
+                                    <button
+                                        onClick={() => handleDeleteSubtask(subtask._id)}
+                                        className="text-[#9CA3AF] hover:text-red-600 opacity-0 group-hover:opacity-100 transition p-1"
+                                    >
+                                        <Trash2 size={14} />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    <form onSubmit={handleAddSubtask} className="flex gap-2">
+                        <input
+                            type="text"
+                            placeholder="Add a new subtask..."
+                            value={newSubtaskTitle}
+                            onChange={(e) => setNewSubtaskTitle(e.target.value)}
+                            disabled={addingSubtask}
+                            className="flex-1 h-11 rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
+                        />
+                        <button
+                            type="submit"
+                            disabled={addingSubtask || !newSubtaskTitle.trim()}
+                            className="flex items-center justify-center h-11 w-11 rounded-xl bg-[#0A0A0A] text-white hover:bg-black/90 disabled:opacity-50 transition shadow-sm shrink-0"
+                        >
+                            <Plus size={16} />
+                        </button>
+                    </form>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4">
