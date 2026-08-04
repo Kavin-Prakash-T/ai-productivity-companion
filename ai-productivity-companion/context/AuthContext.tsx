@@ -52,6 +52,35 @@ export function AuthProvider({
         setLoading(false);
     }, []);
 
+    useEffect(() => {
+        if (!user) return;
+
+        const registerPush = async () => {
+            try {
+                if (typeof window === "undefined" || !("Notification" in window)) return;
+                
+                const permission = await Notification.requestPermission();
+                if (permission !== "granted") {
+                    console.log("Push notifications permission denied");
+                    return;
+                }
+
+                const { getFcmToken } = await import("@/lib/firebase");
+                const token = await getFcmToken();
+                if (token) {
+                    const { registerDevice } = await import("@/services/notificationService");
+                    await registerDevice(token);
+                    console.log("Push notifications registered successfully with token:", token);
+                }
+            } catch (error) {
+                console.error("Error setting up push notifications:", error);
+            }
+        };
+
+        const timer = setTimeout(registerPush, 2000);
+        return () => clearTimeout(timer);
+    }, [user]);
+
     function login(token: string, user: User) {
         if (!token || !user) {
             throw new Error("Invalid auth session data");

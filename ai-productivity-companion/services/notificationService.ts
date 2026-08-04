@@ -11,3 +11,9 @@ export const deleteNotification = (id: string) =>
 
 export const markAllRead = () =>
     api.patch("/notifications/read-all");
+
+export const registerDevice = (token: string) =>
+    api.post("/notifications/register-device", { token });
+
+export const removeDevice = (token: string) =>
+    api.delete("/notifications/register-device", { data: { token } });

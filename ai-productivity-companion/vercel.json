@@ -1,0 +1,10 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "crons": [
+    {
+      "path": "/api/jobs/check-remainders",
+      "schedule": "*/5 * * * *"
+    }
+  ]
+}

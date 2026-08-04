@@ -3,7 +3,7 @@ import User from "@/models/User";
 import Task from "@/models/Task";
 import CalendarEvent from "@/models/CalendarEvent";
 import Notification from "@/models/Notification";
-import { sendPushNotification } from "@/utils/sendPushNotification";
+import { sendEmail } from "@/utils/sendEmail";
 import {
     errorResponse,
     successResponse,
@@ -20,6 +20,10 @@ function createTaskReminderMessage(
             (dueDate.getTime() - Date.now()) / 60000
         )
     );
+
+    if (remainingMinutes <= 5) {
+        return `"${title}" is due in 5 minutes. Start or finish it now.`;
+    }
 
     if (remainingMinutes <= 60) {
         return `"${title}" is due in less than one hour. Start or finish it now.`;
@@ -55,8 +59,13 @@ async function removeInvalidTokens(
 
 export async function GET(request: Request) {
     try {
+        const authHeader = request.headers.get("authorization");
+        const bearerToken = authHeader?.startsWith("Bearer ")
+            ? authHeader.substring(7)
+            : null;
+
         const cronSecret =
-            request.headers.get("x-cron-secret");
+            request.headers.get("x-cron-secret") || bearerToken;
 
         if (
             !process.env.CRON_SECRET ||
@@ -76,8 +85,7 @@ export async function GET(request: Request) {
         const tasks = await Task.find({
             reminderEnabled: true,
             reminderSent: false,
-            reminderTime: {
-                $gte: now,
+            dueDate: {
                 $lte: reminderWindowEnd,
             },
             status: {
@@ -90,10 +98,9 @@ export async function GET(request: Request) {
         for (const task of tasks) {
             const user = await User.findById(
                 task.user
-            ).select("fcmTokens");
+            ).select("email");
 
-            const dueDate =
-                task.dueDate || task.reminderTime || now;
+            const dueDate = task.dueDate || now;
 
             const message =
                 createTaskReminderMessage(
@@ -112,29 +119,22 @@ export async function GET(request: Request) {
                     actionUrl: `/tasks/${task._id}`,
                 });
 
-            if (
-                user &&
-                user.fcmTokens.length > 0
-            ) {
-                const delivery =
-                    await sendPushNotification({
-                        tokens: user.fcmTokens,
-                        title: "Task Reminder",
-                        body: message,
-                        actionUrl: `/tasks/${task._id}`,
+            if (user && user.email) {
+                try {
+                    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+                    await sendEmail({
+                        to: user.email,
+                        subject: `Task Reminder: ${task.title}`,
+                        html: `
+                            <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 12px; background-color: #ffffff;">
+                                <h2 style="color: #111827; font-size: 20px; font-weight: 700; margin-bottom: 16px;">Task Reminder</h2>
+                                <p style="font-size: 16px; color: #374151; line-height: 1.5; margin-bottom: 24px;">${message}</p>
+                                <a href="${appUrl}/tasks/${task._id}" style="display: inline-block; background-color: #000000; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px;">View Task</a>
+                            </div>
+                        `,
                     });
-
-                await removeInvalidTokens(
-                    user._id.toString(),
-                    delivery.invalidTokens
-                );
-
-                if (delivery.successCount > 0) {
-                    notification.pushSent = true;
-                    notification.pushSentAt =
-                        new Date();
-
-                    await notification.save();
+                } catch (emailError) {
+                    console.error(`Failed to send email to ${user.email}:`, emailError);
                 }
             }
 
@@ -149,33 +149,18 @@ export async function GET(request: Request) {
                 reminderEnabled: true,
                 reminderSent: false,
                 startTime: {
-                    $gt: now,
+                    $lte: reminderWindowEnd,
                 },
             });
 
         let calendarRemindersSent = 0;
 
         for (const event of calendarEvents) {
-            const reminderTime = new Date(
-                event.startTime.getTime() -
-                (event.reminderMinutesBefore || 15) *
-                60 *
-                1000
-            );
-
-            if (
-                reminderTime < now ||
-                reminderTime > reminderWindowEnd
-            ) {
-                continue;
-            }
-
             const user = await User.findById(
                 event.user
-            ).select("fcmTokens");
+            ).select("email");
 
-            const message = `${event.title} starts in ${event.reminderMinutesBefore || 15
-                } minutes.`;
+            const message = `${event.title} starts in 5 minutes.`;
 
             const notification =
                 await Notification.create({
@@ -187,29 +172,22 @@ export async function GET(request: Request) {
                     actionUrl: "/calendar",
                 });
 
-            if (
-                user &&
-                user.fcmTokens.length > 0
-            ) {
-                const delivery =
-                    await sendPushNotification({
-                        tokens: user.fcmTokens,
-                        title: "Upcoming Event",
-                        body: message,
-                        actionUrl: "/calendar",
+            if (user && user.email) {
+                try {
+                    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+                    await sendEmail({
+                        to: user.email,
+                        subject: `Upcoming Event: ${event.title}`,
+                        html: `
+                            <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 12px; background-color: #ffffff;">
+                                <h2 style="color: #111827; font-size: 20px; font-weight: 700; margin-bottom: 16px;">Upcoming Event Reminder</h2>
+                                <p style="font-size: 16px; color: #374151; line-height: 1.5; margin-bottom: 24px;">${message}</p>
+                                <a href="${appUrl}/calendar" style="display: inline-block; background-color: #000000; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px;">View Calendar</a>
+                            </div>
+                        `,
                     });
-
-                await removeInvalidTokens(
-                    user._id.toString(),
-                    delivery.invalidTokens
-                );
-
-                if (delivery.successCount > 0) {
-                    notification.pushSent = true;
-                    notification.pushSentAt =
-                        new Date();
-
-                    await notification.save();
+                } catch (emailError) {
+                    console.error(`Failed to send email to ${user.email}:`, emailError);
                 }
             }
 
