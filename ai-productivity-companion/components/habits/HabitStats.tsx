@@ -9,15 +9,6 @@ interface Props {
 
 export default function HabitStats({ habit }: Props) {
 
-    const completionRate = habit.totalCompletions > 0
-        ? Math.round(
-            (habit.totalCompletions /
-                Math.max(1, Math.round(
-                    (new Date().getTime() - new Date(habit.createdAt ?? "").getTime()) /
-                    (1000 * 60 * 60 * 24)
-                ))) * 100
-        )
-        : 0;
 
     const stats = [
         {

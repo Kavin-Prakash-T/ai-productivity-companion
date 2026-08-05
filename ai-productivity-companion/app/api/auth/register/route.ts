@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     let body;
     try {
       body = await req.json();
-    } catch (e) {
+    } catch {
       return errorResponse("Invalid or empty request body", 400);
     }
 
@@ -55,7 +55,7 @@ export async function POST(req: Request) {
             <p>This OTP expires in 10 minutes.</p>
           `,
         });
-      } catch (emailError) {
+      } catch {
         console.log("\n=======================================================");
         console.log(`[DEV ONLY] Email send failed (port 465 blocked by network).`);
         console.log(`[DEV ONLY] Bypassing email send. Email verification OTP is: ${otp}`);
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
           <p>This OTP expires in 10 minutes.</p>
         `,
       });
-    } catch (emailError) {
+    } catch {
       console.log("\n=======================================================");
       console.log(`[DEV ONLY] Email send failed (port 465 blocked by network).`);
       console.log(`[DEV ONLY] Bypassing email send. Email verification OTP is: ${otp}`);

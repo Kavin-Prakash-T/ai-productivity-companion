@@ -12,15 +12,15 @@ export async function GET(request: Request) {
         await connectDB();
         const authUser = getAuthUser(request);
 
-        const user = await User.findById(authUser.userId).select("name email fcmTokens isVerified");
+        const user = await User.findById(authUser.userId).select("name email isVerified");
         if (!user) {
             return errorResponse("User not found", 404);
         }
 
         return successResponse("Preferences fetched successfully", {
             preferences: {
-                pushNotificationsEnabled: user.fcmTokens.length > 0,
-                registeredDevices: user.fcmTokens.length,
+                pushNotificationsEnabled: false,
+                registeredDevices: 0,
                 emailVerified: user.isVerified,
             },
         });
@@ -48,7 +48,7 @@ export async function PUT(request: Request) {
         const body = await request.json();
 
         // Validate user exists
-        const user = await User.findById(authUser.userId).select("name email fcmTokens isVerified");
+        const user = await User.findById(authUser.userId).select("name email isVerified");
         if (!user) {
             return errorResponse("User not found", 404);
         }
@@ -57,8 +57,8 @@ export async function PUT(request: Request) {
         // For now, return the current effective preferences
         return successResponse("Preferences updated successfully", {
             preferences: {
-                pushNotificationsEnabled: user.fcmTokens.length > 0,
-                registeredDevices: user.fcmTokens.length,
+                pushNotificationsEnabled: false,
+                registeredDevices: 0,
                 emailVerified: user.isVerified,
                 // Echo back any preferences the client sent
                 ...(body.theme ? { theme: body.theme } : {}),

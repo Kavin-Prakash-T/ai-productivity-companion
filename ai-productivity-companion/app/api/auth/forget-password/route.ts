@@ -40,7 +40,7 @@ export async function POST(req: Request) {
           <p>This OTP expires in 10 minutes.</p>
         `,
       });
-    } catch (emailError) {
+    } catch {
       console.log("\n=======================================================");
       console.log(`[DEV ONLY] Email send failed (port 465 blocked by network).`);
       console.log(`[DEV ONLY] Bypassing email send. Password reset OTP is: ${otp}`);

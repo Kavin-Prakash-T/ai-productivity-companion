@@ -37,7 +37,7 @@ export default function DashboardPage() {
     if (error) {
         return (
             <div className="space-y-8">
-                <PageHeader user={user} onRefresh={refresh} />
+                <PageHeader user={user} />
                 <ErrorState message={error} onRetry={refresh} />
             </div>
         );
@@ -48,7 +48,7 @@ export default function DashboardPage() {
 
             <div className="flex items-start justify-between gap-4">
 
-                <PageHeader user={user} onRefresh={refresh} />
+                <PageHeader user={user} />
 
                 <button
                     onClick={refresh}
@@ -142,10 +142,8 @@ export default function DashboardPage() {
 
 function PageHeader({
     user,
-    onRefresh,
 }: {
     user: { name: string } | null;
-    onRefresh: () => void;
 }) {
     return (
         <div>

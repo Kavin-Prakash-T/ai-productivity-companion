@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCheck, Trash2 } from "lucide-react";
+import { CheckCheck } from "lucide-react";
 
 interface Props {
     unreadCount: number;

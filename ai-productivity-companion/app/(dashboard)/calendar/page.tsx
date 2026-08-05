@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import toast from "react-hot-toast";
-import { Plus, CalendarDays } from "lucide-react";
+import { Plus } from "lucide-react";
 
-import { getEvents, deleteEvent } from "@/services/calendarService";
+import { getEvents } from "@/services/calendarService";
 import type { CalendarEvent } from "@/types";
 
 import CalendarGrid from "@/components/calendar/CalendarGrid";

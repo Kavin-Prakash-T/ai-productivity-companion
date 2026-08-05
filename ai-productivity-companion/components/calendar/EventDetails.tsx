@@ -11,7 +11,6 @@ import {
     MapPin,
     Bell,
     Trash2,
-    Loader2,
 } from "lucide-react";
 
 import { getEvent, deleteEvent } from "@/services/calendarService";

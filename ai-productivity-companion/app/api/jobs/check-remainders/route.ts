@@ -40,22 +40,7 @@ function createTaskReminderMessage(
     return `"${title}" is due in approximately ${remainingHours} hours. This is a good time to make progress.`;
 }
 
-async function removeInvalidTokens(
-    userId: string,
-    invalidTokens: string[]
-) {
-    if (invalidTokens.length === 0) {
-        return;
-    }
 
-    await User.findByIdAndUpdate(userId, {
-        $pull: {
-            fcmTokens: {
-                $in: invalidTokens,
-            },
-        },
-    });
-}
 
 export async function GET(request: Request) {
     try {
@@ -109,15 +94,14 @@ export async function GET(request: Request) {
                     dueDate
                 );
 
-            const notification =
-                await Notification.create({
-                    user: task.user,
-                    type: "task-reminder",
-                    title: "Task Reminder",
-                    message,
-                    relatedTask: task._id,
-                    actionUrl: `/tasks/${task._id}`,
-                });
+            await Notification.create({
+                user: task.user,
+                type: "task-reminder",
+                title: "Task Reminder",
+                message,
+                relatedTask: task._id,
+                actionUrl: `/tasks/${task._id}`,
+            });
 
             if (user && user.email) {
                 try {
@@ -162,15 +146,14 @@ export async function GET(request: Request) {
 
             const message = `${event.title} starts in 5 minutes.`;
 
-            const notification =
-                await Notification.create({
-                    user: event.user,
-                    type: "calendar-reminder",
-                    title: "Upcoming Event",
-                    message,
-                    relatedCalendarEvent: event._id,
-                    actionUrl: "/calendar",
-                });
+            await Notification.create({
+                user: event.user,
+                type: "calendar-reminder",
+                title: "Upcoming Event",
+                message,
+                relatedCalendarEvent: event._id,
+                actionUrl: "/calendar",
+            });
 
             if (user && user.email) {
                 try {

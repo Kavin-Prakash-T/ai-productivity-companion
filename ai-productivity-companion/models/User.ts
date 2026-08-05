@@ -9,7 +9,6 @@ export interface IUser {
   emailOtpExpires?: Date;
   resetOtp?: string;
   resetOtpExpires?: Date;
-  fcmTokens: string[];
 }
 
 const userSchema = new Schema<IUser>(
@@ -45,10 +44,6 @@ const userSchema = new Schema<IUser>(
     emailOtpExpires: Date,
     resetOtp: String,
     resetOtpExpires: Date,
-    fcmTokens: {
-      type: [String],
-      default: [],
-    },
   },
   { timestamps: true }
 );
