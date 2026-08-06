@@ -53,7 +53,7 @@ export default function PreferenceForm() {
                 <h1 className="text-3xl font-bold">Preferences</h1>
             </div>
 
-            <div className="rounded-2xl border bg-white p-8 space-y-6">
+            <div className="rounded-2xl border bg-white p-6 sm:p-8 space-y-6">
 
                 {/* Theme Selector */}
                 <div>

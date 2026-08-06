@@ -43,7 +43,7 @@ export default function ChatInput({ onSend, onResponse, onLoadingChange, loading
     }
 
     return (
-        <div className="flex items-end gap-3 p-4 bg-white border-t border-[#E5E7EB]">
+        <div className="flex items-end gap-3">
 
             <textarea
                 value={text}

@@ -20,9 +20,9 @@ export default function TaskFilter({
     onStatus,
 }: Props) {
     return (
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 w-full">
 
-            <div className="relative">
+            <div className="relative w-full sm:w-auto">
 
                 <Search
                     size={15}
@@ -33,7 +33,7 @@ export default function TaskFilter({
                     value={search}
                     onChange={(e) => onSearch(e.target.value)}
                     placeholder="Search tasks..."
-                    className="h-11 w-64 rounded-xl border border-[#E5E7EB] bg-white pl-10 pr-4 text-sm text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
+                    className="h-11 w-full sm:w-64 rounded-xl border border-[#E5E7EB] bg-white pl-10 pr-4 text-sm text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
                 />
 
             </div>
@@ -41,7 +41,7 @@ export default function TaskFilter({
             <select
                 value={priority}
                 onChange={(e) => onPriority(e.target.value)}
-                className="h-11 rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm text-[#0A0A0A] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
+                className="h-11 w-full sm:w-auto rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm text-[#0A0A0A] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
             >
                 <option value="">All Priority</option>
                 <option value="urgent">Urgent</option>
@@ -53,7 +53,7 @@ export default function TaskFilter({
             <select
                 value={status}
                 onChange={(e) => onStatus(e.target.value)}
-                className="h-11 rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm text-[#0A0A0A] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
+                className="h-11 w-full sm:w-auto rounded-xl border border-[#E5E7EB] bg-white px-4 text-sm text-[#0A0A0A] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
             >
                 <option value="">All Status</option>
                 <option value="pending">Pending</option>

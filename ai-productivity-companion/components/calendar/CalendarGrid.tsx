@@ -60,7 +60,10 @@ export default function CalendarGrid({ events, currentDate, selectedDay, onSelec
             {/* Day labels */}
             <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-[#6B7280] uppercase tracking-wider">
                 {WEEK_DAYS.map((d) => (
-                    <div key={d} className="py-1">{d}</div>
+                    <div key={d} className="py-1">
+                        <span className="hidden sm:inline">{d}</span>
+                        <span className="inline sm:hidden">{d[0]}</span>
+                    </div>
                 ))}
             </div>
 

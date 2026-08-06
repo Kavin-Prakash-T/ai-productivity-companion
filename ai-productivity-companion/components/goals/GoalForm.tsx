@@ -130,7 +130,7 @@ export default function GoalForm({ id }: Props) {
                 </div>
             </div>
 
-            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-8 space-y-6 shadow-sm">
+            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
 
                 <div>
                     <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">

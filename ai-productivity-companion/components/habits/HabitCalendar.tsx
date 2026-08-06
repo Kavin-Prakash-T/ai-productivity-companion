@@ -26,7 +26,7 @@ export default function HabitCalendar({ logs }: Props) {
 
             <h3 className="font-bold text-[#0A0A0A] mb-4">Last 30 Days</h3>
 
-            <div className="grid grid-cols-10 gap-1.5 sm:grid-cols-15">
+            <div className="grid grid-cols-10 gap-1.5 sm:grid-cols-[repeat(15,minmax(0,1fr))]">
 
                 {days.map((day) => {
 

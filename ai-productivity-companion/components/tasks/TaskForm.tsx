@@ -153,7 +153,7 @@ export default function TaskForm({ id }: Props) {
                 </div>
             </div>
 
-            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-8 shadow-sm space-y-6">
+            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-5 sm:p-6 md:p-8 shadow-sm space-y-6">
 
                 <div>
                     <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">

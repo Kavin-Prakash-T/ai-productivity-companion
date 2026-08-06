@@ -98,16 +98,16 @@ export default function ProfileCard() {
                         <User size={54} />
                     </div>
 
-                    <div className="space-y-3.5 min-w-0">
+                    <div className="space-y-3.5 min-w-0 flex flex-col items-center md:items-start text-center md:text-left w-full md:w-auto">
 
-                        <h2 className="text-3xl font-bold text-[#0A0A0A] truncate">{profile.name}</h2>
+                        <h2 className="text-3xl font-bold text-[#0A0A0A] truncate w-full">{profile.name}</h2>
 
-                        <div className="flex items-center gap-3 text-[#6B7280] font-semibold text-sm">
+                        <div className="flex items-center gap-3 text-[#6B7280] font-semibold text-sm justify-center md:justify-start">
                             <Mail size={16} className="shrink-0 text-[#9CA3AF]" />
                             <span className="truncate">{profile.email}</span>
                         </div>
 
-                        <div className="flex items-center gap-3 text-[#6B7280] font-semibold text-sm">
+                        <div className="flex items-center gap-3 text-[#6B7280] font-semibold text-sm justify-center md:justify-start">
                             <Calendar size={16} className="shrink-0 text-[#9CA3AF]" />
                             <span>Joined {joinedDate}</span>
                         </div>

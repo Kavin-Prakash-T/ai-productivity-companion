@@ -69,7 +69,7 @@ export default function ChangePasswordForm() {
                 Change Password
             </h1>
 
-            <div className="rounded-2xl border bg-white p-8 space-y-5">
+            <div className="rounded-2xl border bg-white p-6 sm:p-8 space-y-5">
 
                 <input
                     type="password"

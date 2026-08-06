@@ -100,7 +100,7 @@ export default function ProfileForm() {
                 <h1 className="text-3xl font-bold text-[#0A0A0A]">Edit Profile</h1>
             </div>
 
-            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-8 space-y-6 shadow-sm">
+            <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6 sm:p-8 space-y-6 shadow-sm">
 
                 <div>
                     <label className="block text-sm font-semibold text-[#0A0A0A] mb-2">
