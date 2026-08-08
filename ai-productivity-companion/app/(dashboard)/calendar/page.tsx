@@ -34,7 +34,10 @@ export default function CalendarPage() {
     }
 
     useEffect(() => {
-        load();
+        const timer = setTimeout(() => {
+            load();
+        }, 0);
+        return () => clearTimeout(timer);
     }, []);
 
     function goToPrev() {
