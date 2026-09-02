@@ -6,6 +6,6 @@ const groq = new Groq({
     apiKey,
 });
 
-export const GROQ_MODEL = "llama-3.1-8b-instant";
+export const GROQ_MODEL = "openai/gpt-oss-120b";
 
 export default groq;
