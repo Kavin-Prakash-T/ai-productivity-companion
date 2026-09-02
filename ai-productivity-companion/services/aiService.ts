@@ -4,10 +4,10 @@ export const sendMessage = (message: string) =>
     api.post("/ai/chat", { message });
 
 export const prioritizeTasks = () =>
-    api.get("/ai/prioritize");
+    api.post("/ai/prioritize");
 
 export const generateSchedule = () =>
-    api.get("/ai/schedule");
+    api.post("/ai/schedule");
 
 export const productivityInsights = () =>
     api.get("/ai/insights");

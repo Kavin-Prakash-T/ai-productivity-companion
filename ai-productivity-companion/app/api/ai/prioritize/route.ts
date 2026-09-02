@@ -20,6 +20,10 @@ type PrioritizationResult = {
     prioritizedTasks: PrioritizedTask[];
 };
 
+export async function GET(request: Request) {
+    return POST(request);
+}
+
 export async function POST(request: Request) {
     try {
         await connectDB();

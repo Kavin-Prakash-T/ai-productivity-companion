@@ -31,6 +31,10 @@ function isValidTime(value: string): boolean {
     return /^([01]\d|2[0-3]):([0-5]\d)$/.test(value);
 }
 
+export async function GET(request: Request) {
+    return POST(request);
+}
+
 export async function POST(request: Request) {
     try {
         await connectDB();

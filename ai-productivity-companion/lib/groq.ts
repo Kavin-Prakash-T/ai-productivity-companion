@@ -1,11 +1,9 @@
 import Groq from "groq-sdk";
 
-if (!process.env.GROQ_API_KEY) {
-    throw new Error("GROQ_API_KEY is missing");
-}
+const apiKey = process.env.GROQ_API_KEY || "";
 
 const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY,
+    apiKey,
 });
 
 export const GROQ_MODEL = "groq/compound";

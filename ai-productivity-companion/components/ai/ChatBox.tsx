@@ -50,7 +50,9 @@ export default function ChatBox() {
 
     }
 
-    function handleQuickAction(prompt: string) {
+    async function handleQuickAction(prompt: string) {
+
+        if (loading) return;
 
         const userMsg: ChatMessageType = {
             role: "user",
@@ -59,6 +61,17 @@ export default function ChatBox() {
         };
 
         setMessages((prev) => [...prev, userMsg]);
+        setLoading(true);
+
+        try {
+            const { sendMessage } = await import("@/services/aiService");
+            const { data } = await sendMessage(prompt);
+            handleResponse(data.data?.reply ?? data.reply ?? "I'm unable to respond right now.");
+        } catch {
+            handleResponse("Sorry, I couldn't connect to the AI. Please try again.");
+        } finally {
+            setLoading(false);
+        }
 
     }
 

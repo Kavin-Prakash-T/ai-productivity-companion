@@ -118,6 +118,8 @@ Guidelines:
 - Reference the user's actual tasks/goals/habits when relevant
 - Do not make up data not in the context
 - Respond in plain text (no markdown unless specifically needed)
+- Do not print or quote raw context JSON or explain context filtering steps
+- Do not output internal reasoning or thinking steps; give only the direct response to the user
 - Keep responses under 200 words unless the user asks for detail`,
                 },
                 ...trimmedHistory,
@@ -128,9 +130,11 @@ Guidelines:
             ],
         });
 
-        const reply =
-            completion.choices[0]?.message?.content?.trim() ||
-            "I'm sorry, I couldn't generate a response. Please try again.";
+        let reply = completion.choices[0]?.message?.content?.trim() || "";
+        reply = reply.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+        if (!reply) {
+            reply = "I'm sorry, I couldn't generate a response. Please try again.";
+        }
 
         return successResponse("Message sent successfully", {
             reply,
