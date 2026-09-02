@@ -6,6 +6,6 @@ const groq = new Groq({
     apiKey,
 });
 
-export const GROQ_MODEL = "groq/compound";
+export const GROQ_MODEL = "llama-3.1-8b-instant";
 
 export default groq;
