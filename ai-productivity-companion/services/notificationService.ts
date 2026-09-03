@@ -11,4 +11,8 @@ export const deleteNotification = (id: string) =>
 
 export const markAllRead = () =>
     api.patch("/notifications/read-all");
+
+export const triggerReminderCheck = () =>
+    api.post("/jobs/check-remainders");
+
 

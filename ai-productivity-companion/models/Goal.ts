@@ -14,6 +14,7 @@ export interface IGoal {
     targetDate?: Date;
     progress: number;
     status: GoalStatus;
+    reminderSent?: boolean;
     completedAt?: Date;
     createdAt?: Date;
     updatedAt?: Date;
@@ -67,6 +68,11 @@ const goalSchema = new Schema<IGoal>(
                 "cancelled",
             ],
             default: "not-started",
+        },
+
+        reminderSent: {
+            type: Boolean,
+            default: false,
         },
 
         completedAt: {

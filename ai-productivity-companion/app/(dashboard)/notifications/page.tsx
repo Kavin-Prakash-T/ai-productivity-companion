@@ -9,6 +9,7 @@ import {
     markAsRead,
     markAllRead,
     deleteNotification,
+    triggerReminderCheck,
 } from "@/services/notificationService";
 import type { Notification } from "@/types";
 
@@ -22,6 +23,7 @@ export default function NotificationsPage() {
 
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [loading, setLoading] = useState(true);
+    const [checkingReminders, setCheckingReminders] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     async function load() {
@@ -40,6 +42,24 @@ export default function NotificationsPage() {
     useEffect(() => {
         load();
     }, []);
+
+    async function handleCheckReminders() {
+        setCheckingReminders(true);
+        try {
+            const res = await triggerReminderCheck();
+            const count = res.data?.data?.totalSent ?? 0;
+            if (count > 0) {
+                toast.success(`Sent ${count} deadline alert(s) and notification(s)`);
+            } else {
+                toast.success("Checked all deadlines (no new alerts required)");
+            }
+            await load();
+        } catch {
+            toast.error("Failed to check reminders");
+        } finally {
+            setCheckingReminders(false);
+        }
+    }
 
     async function handleMarkRead(id: string) {
         try {
@@ -81,6 +101,8 @@ export default function NotificationsPage() {
             <NotificationHeader
                 unreadCount={unreadCount}
                 onMarkAllRead={handleMarkAllRead}
+                onCheckReminders={handleCheckReminders}
+                checkingReminders={checkingReminders}
                 loading={loading}
             />
 
