@@ -79,6 +79,7 @@ const taskSchema = new Schema<ITask>(
 
     description: {
       type: String,
+      required: [true, "Task description is required"],
       trim: true,
       maxlength: 1000,
     },
@@ -92,6 +93,7 @@ const taskSchema = new Schema<ITask>(
     priority: {
       type: String,
       enum: ["low", "medium", "high", "urgent"],
+      required: [true, "Task priority is required"],
       default: "medium",
     },
 
@@ -109,11 +111,13 @@ const taskSchema = new Schema<ITask>(
 
     dueDate: {
       type: Date,
+      required: [true, "Due date is required"],
     },
 
     estimatedMinutes: {
       type: Number,
-      min: 1,
+      required: [true, "Estimated time is required"],
+      min: [1, "Estimated time must be at least 1 minute"],
     },
 
     subtasks: {

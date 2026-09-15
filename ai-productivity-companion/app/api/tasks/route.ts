@@ -30,25 +30,12 @@ export async function POST(request: Request) {
             return errorResponse("Task title is required", 400);
         }
 
-        if (
-            estimatedMinutes !== undefined &&
-            Number(estimatedMinutes) < 1
-        ) {
-            return errorResponse(
-                "Estimated time must be at least 1 minute",
-                400
-            );
+        if (!description?.trim()) {
+            return errorResponse("Task description is required", 400);
         }
 
-        if (dueDate && Number.isNaN(new Date(dueDate).getTime())) {
-            return errorResponse("Invalid due date", 400);
-        }
-
-        if (
-            reminderTime &&
-            Number.isNaN(new Date(reminderTime).getTime())
-        ) {
-            return errorResponse("Invalid reminder time", 400);
+        if (!priority) {
+            return errorResponse("Task priority is required", 400);
         }
 
         const validPriorities: TaskPriority[] = [
@@ -58,8 +45,41 @@ export async function POST(request: Request) {
             "urgent",
         ];
 
-        if (priority && !validPriorities.includes(priority)) {
+        if (!validPriorities.includes(priority)) {
             return errorResponse("Invalid task priority", 400);
+        }
+
+        if (!dueDate) {
+            return errorResponse("Due date is required", 400);
+        }
+
+        if (Number.isNaN(new Date(dueDate).getTime())) {
+            return errorResponse("Invalid due date", 400);
+        }
+
+        if (
+            estimatedMinutes === undefined ||
+            estimatedMinutes === null ||
+            estimatedMinutes === ""
+        ) {
+            return errorResponse("Estimated time is required", 400);
+        }
+
+        if (
+            Number.isNaN(Number(estimatedMinutes)) ||
+            Number(estimatedMinutes) < 1
+        ) {
+            return errorResponse(
+                "Estimated time must be at least 1 minute",
+                400
+            );
+        }
+
+        if (
+            reminderTime &&
+            Number.isNaN(new Date(reminderTime).getTime())
+        ) {
+            return errorResponse("Invalid reminder time", 400);
         }
 
         const task = await Task.create({

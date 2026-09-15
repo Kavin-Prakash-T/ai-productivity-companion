@@ -88,15 +88,32 @@ export default function TaskForm({ id }: Props) {
             return toast.error("Task title is required");
         }
 
+        if (!formData.description.trim()) {
+            return toast.error("Task description is required");
+        }
+
+        if (!formData.priority) {
+            return toast.error("Task priority is required");
+        }
+
+        if (!formData.dueDate) {
+            return toast.error("Due date is required");
+        }
+
         const minutesVal = formData.estimatedMinutes.trim();
-        if (minutesVal && (Number.isNaN(Number(minutesVal)) || Number(minutesVal) < 1)) {
+        if (!minutesVal) {
+            return toast.error("Estimated time is required");
+        }
+
+        if (Number.isNaN(Number(minutesVal)) || Number(minutesVal) < 1) {
             return toast.error("Estimated minutes must be at least 1");
         }
 
         const payload = {
             ...formData,
-            estimatedMinutes: minutesVal ? Number(minutesVal) : undefined,
-            dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : undefined,
+            category: formData.category.trim() || "General",
+            estimatedMinutes: Number(minutesVal),
+            dueDate: new Date(formData.dueDate).toISOString(),
         };
 
         try {
@@ -158,7 +175,7 @@ export default function TaskForm({ id }: Props) {
                 <div>
                     <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
                         <Type size={16} className="text-[#6B7280]" />
-                        Title
+                        Title <span className="text-red-500">*</span>
                     </label>
                     <input
                         name="title"
@@ -172,7 +189,7 @@ export default function TaskForm({ id }: Props) {
                 <div>
                     <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
                         <FileText size={16} className="text-[#6B7280]" />
-                        Description
+                        Description <span className="text-red-500">*</span>
                     </label>
                     <textarea
                         rows={4}
@@ -189,7 +206,7 @@ export default function TaskForm({ id }: Props) {
                     <div>
                         <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
                             <Flag size={16} className="text-[#6B7280]" />
-                            Priority
+                            Priority <span className="text-red-500">*</span>
                         </label>
                         <select
                             name="priority"
@@ -207,7 +224,7 @@ export default function TaskForm({ id }: Props) {
                     <div>
                         <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
                             <FolderOpen size={16} className="text-[#6B7280]" />
-                            Category
+                            Category <span className="text-xs font-normal text-[#6B7280]">(Optional)</span>
                         </label>
                         <input
                             name="category"
@@ -225,7 +242,7 @@ export default function TaskForm({ id }: Props) {
                     <div>
                         <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
                             <Calendar size={16} className="text-[#6B7280]" />
-                            Due Date
+                            Due Date <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="datetime-local"
@@ -239,7 +256,7 @@ export default function TaskForm({ id }: Props) {
                     <div>
                         <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
                             <Clock size={16} className="text-[#6B7280]" />
-                            Estimated Time (Minutes)
+                            Estimated Time (Minutes) <span className="text-red-500">*</span>
                         </label>
                         <input
                             type="number"

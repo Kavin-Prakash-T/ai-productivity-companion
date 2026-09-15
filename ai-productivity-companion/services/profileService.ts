@@ -5,6 +5,3 @@ export const getProfile = () =>
 
 export const updateProfile = (data: any) =>
     api.put("/user/profile", data);
-
-export const uploadAvatar = (data: FormData) =>
-    api.post("/user/avatar", data);
