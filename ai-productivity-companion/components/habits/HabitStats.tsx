@@ -9,18 +9,19 @@ interface Props {
 
 export default function HabitStats({ habit }: Props) {
 
+    const periodShort = habit.frequency === 'weekly' ? 'w' : habit.frequency === 'monthly' ? 'm' : habit.frequency === 'yearly' ? 'y' : 'd';
 
     const stats = [
         {
             icon: Flame,
             label: "Current Streak",
-            value: `${habit.currentStreak}d`,
+            value: `${habit.currentStreak}${periodShort}`,
             color: habit.currentStreak > 0 ? "text-orange-500" : "text-[#D1D5DB]",
         },
         {
             icon: TrendingUp,
             label: "Longest Streak",
-            value: `${habit.longestStreak}d`,
+            value: `${habit.longestStreak}${periodShort}`,
             color: "text-[#0A0A0A]",
         },
         {

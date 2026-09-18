@@ -55,7 +55,7 @@ export interface Goal {
 }
 
 
-export type HabitFrequency = "daily" | "weekly";
+export type HabitFrequency = "daily" | "weekly" | "monthly" | "yearly";
 
 export interface HabitLog {
     date: string;

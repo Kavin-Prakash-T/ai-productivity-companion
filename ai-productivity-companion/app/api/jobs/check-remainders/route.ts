@@ -3,8 +3,10 @@ import User from "@/models/User";
 import Task from "@/models/Task";
 import CalendarEvent from "@/models/CalendarEvent";
 import Goal from "@/models/Goal";
+import Habit from "@/models/Habit";
 import Notification from "@/models/Notification";
 import { sendEmail } from "@/utils/sendEmail";
+import { calculateHabitStreak } from "@/utils/habitStreak";
 import { getAuthUser } from "@/lib/getAuthUser";
 import {
     errorResponse,
@@ -233,10 +235,23 @@ async function process24HourReminders() {
         goalRemindersSent++;
     }
 
+    // 4. Process Habits: Recalculate streaks for active habits to reset broken streaks daily
+    const activeHabits = await Habit.find({ isActive: true });
+    let streaksResetCount = 0;
+    for (const habit of activeHabits) {
+        const calculatedStreak = calculateHabitStreak(habit.completionLogs);
+        if (habit.currentStreak !== calculatedStreak) {
+            habit.currentStreak = calculatedStreak;
+            await habit.save();
+            streaksResetCount++;
+        }
+    }
+
     return {
         taskRemindersSent,
         calendarRemindersSent,
         goalRemindersSent,
+        streaksUpdated: streaksResetCount,
         totalSent: taskRemindersSent + calendarRemindersSent + goalRemindersSent,
         checkedAt: now,
     };

@@ -7,6 +7,7 @@ import Link from "next/link";
 import {
     Flame,
     Repeat,
+    FolderOpen,
     ArrowLeft,
     Loader2,
 } from "lucide-react";
@@ -140,6 +141,20 @@ export default function HabitForm({ id }: Props) {
 
                 <div>
                     <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
+                        <FolderOpen size={18} className="text-[#6B7280]" />
+                        Category
+                    </label>
+                    <input
+                        name="category"
+                        value={form.category}
+                        onChange={handleChange}
+                        className="w-full h-12 rounded-xl border border-[#E5E7EB] bg-white px-4 text-[#0A0A0A] placeholder-[#9CA3AF] focus:border-[#0A0A0A] focus:ring-2 focus:ring-[#0A0A0A]/10 transition-all duration-200 shadow-sm"
+                        placeholder="e.g. Personal, Office, Health, Fitness..."
+                    />
+                </div>
+
+                <div>
+                    <label className="mb-2 flex items-center gap-2 font-semibold text-[#0A0A0A] text-sm">
                         <Repeat size={18} className="text-[#6B7280]" />
                         Frequency
                     </label>
@@ -151,6 +166,8 @@ export default function HabitForm({ id }: Props) {
                     >
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
                     </select>
                 </div>
 

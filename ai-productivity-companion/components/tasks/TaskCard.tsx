@@ -46,12 +46,15 @@ export default function TaskCard({ task, onComplete, onDelete }: Props) {
 
                     <button
                         onClick={handleComplete}
-                        title={isCompleted ? "Completed" : "Mark complete"}
-                        className="mt-0.5 shrink-0 text-[#9CA3AF] hover:text-[#0A0A0A] transition-colors"
+                        title={isCompleted ? "Completed (Click to undo)" : "Mark complete"}
+                        className="mt-0.5 shrink-0 text-[#9CA3AF] transition-transform active:scale-90 hover:scale-110 group/check"
                     >
                         <CheckCircle2
                             size={18}
-                            className={isCompleted ? "text-green-600 fill-green-50" : ""}
+                            className={isCompleted
+                                ? "text-emerald-600 fill-emerald-50 group-hover/check:text-rose-600 group-hover/check:fill-rose-50 transition-colors"
+                                : "text-[#D1D5DB] group-hover/check:text-emerald-600 group-hover/check:fill-emerald-50 transition-colors"
+                            }
                         />
                     </button>
 

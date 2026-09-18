@@ -17,5 +17,8 @@ export const updateHabit = (
 export const deleteHabit = (id: string) =>
     api.delete(`/habits/${id}`);
 
-export const checkInHabit = (id: string) =>
-    api.patch(`/habits/${id}/check-in`);
+export const checkInHabit = (id: string, date?: string) =>
+    api.patch(`/habits/${id}/check-in`, date ? { date } : undefined);
+
+export const uncheckInHabit = (id: string, date?: string) =>
+    api.delete(`/habits/${id}/check-in`, { data: date ? { date } : undefined });

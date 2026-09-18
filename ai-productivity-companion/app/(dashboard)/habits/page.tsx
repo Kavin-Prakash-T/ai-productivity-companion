@@ -45,21 +45,9 @@ export default function HabitsPage() {
         load();
     }, []);
 
-    function handleCheckedIn(id: string) {
+    function handleCheckedIn(updatedHabit: Habit) {
         setHabits((prev) =>
-            prev.map((h) =>
-                h._id === id
-                    ? {
-                        ...h,
-                        currentStreak: h.currentStreak + 1,
-                        totalCompletions: h.totalCompletions + 1,
-                        completionLogs: [
-                            ...h.completionLogs,
-                            { date: todayKey, completedAt: new Date().toISOString() },
-                        ],
-                    }
-                    : h
-            )
+            prev.map((h) => (h._id === updatedHabit._id ? updatedHabit : h))
         );
     }
 

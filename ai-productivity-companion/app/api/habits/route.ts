@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import { getAuthUser } from "@/lib/getAuthUser";
 import Habit, { HabitFrequency } from "@/models/Habit";
+import { calculateHabitStreak, calculateLongestHabitStreak } from "@/utils/habitStreak";
 import {
     errorResponse,
     successResponse,
@@ -9,6 +10,8 @@ import {
 const validFrequencies: HabitFrequency[] = [
     "daily",
     "weekly",
+    "monthly",
+    "yearly",
 ];
 
 export async function POST(request: Request) {
@@ -36,7 +39,7 @@ export async function POST(request: Request) {
             !validFrequencies.includes(frequency)
         ) {
             return errorResponse(
-                "Frequency must be daily or weekly",
+                "Frequency must be daily, weekly, monthly, or yearly",
                 400
             );
         }
@@ -166,11 +169,24 @@ export async function GET(request: Request) {
             createdAt: -1,
         });
 
+        const updatedHabits = await Promise.all(
+            habits.map(async (habit) => {
+                const calculatedStreak = calculateHabitStreak(habit.completionLogs, habit.frequency);
+                const calculatedLongestStreak = calculateLongestHabitStreak(habit.completionLogs, habit.frequency);
+                if (habit.currentStreak !== calculatedStreak || habit.longestStreak !== calculatedLongestStreak) {
+                    habit.currentStreak = calculatedStreak;
+                    habit.longestStreak = calculatedLongestStreak;
+                    await habit.save();
+                }
+                return habit;
+            })
+        );
+
         return successResponse(
             "Habits fetched successfully",
             {
-                habits,
-                count: habits.length,
+                habits: updatedHabits,
+                count: updatedHabits.length,
             }
         );
     } catch (error) {

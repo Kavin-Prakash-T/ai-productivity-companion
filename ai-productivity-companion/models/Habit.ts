@@ -1,7 +1,7 @@
 
 import mongoose, { Model, Schema, Types } from "mongoose";
 
-export type HabitFrequency = "daily" | "weekly";
+export type HabitFrequency = "daily" | "weekly" | "monthly" | "yearly";
 
 export interface IHabitLog {
     date: string;
@@ -73,7 +73,7 @@ const habitSchema = new Schema<IHabit>(
 
         frequency: {
             type: String,
-            enum: ["daily", "weekly"],
+            enum: ["daily", "weekly", "monthly", "yearly"],
             default: "daily",
         },
 

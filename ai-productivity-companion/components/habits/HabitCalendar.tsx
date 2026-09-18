@@ -37,9 +37,9 @@ export default function HabitCalendar({ logs }: Props) {
                         <div
                             key={day}
                             title={`${day} — ${done ? "Completed" : "Missed"}`}
-                            className={`aspect-square rounded-md flex items-center justify-center text-xs font-medium transition ${done
-                                ? "bg-[#0A0A0A] text-white shadow-sm"
-                                : "bg-gray-50 text-[#D1D5DB] border border-[#E5E7EB]"
+                            className={`aspect-square rounded-md flex items-center justify-center text-xs font-medium transition-all duration-200 hover:scale-110 cursor-pointer ${done
+                                ? "bg-[#0A0A0A] text-white shadow-sm hover:bg-emerald-600"
+                                : "bg-gray-50 text-[#9CA3AF] border border-[#E5E7EB] hover:border-gray-400 hover:text-[#0A0A0A]"
                                 }`}
                         >
                             {dayNum}

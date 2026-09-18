@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { connectDB } from "@/lib/db";
 import { getAuthUser } from "@/lib/getAuthUser";
 import Habit, { HabitFrequency } from "@/models/Habit";
+import { calculateHabitStreak, calculateLongestHabitStreak } from "@/utils/habitStreak";
 import {
     errorResponse,
     successResponse,
@@ -16,6 +17,8 @@ type RouteContext = {
 const validFrequencies: HabitFrequency[] = [
     "daily",
     "weekly",
+    "monthly",
+    "yearly",
 ];
 
 export async function GET(
@@ -39,6 +42,14 @@ export async function GET(
 
         if (!habit) {
             return errorResponse("Habit not found", 404);
+        }
+
+        const calculatedStreak = calculateHabitStreak(habit.completionLogs, habit.frequency);
+        const calculatedLongestStreak = calculateLongestHabitStreak(habit.completionLogs, habit.frequency);
+        if (habit.currentStreak !== calculatedStreak || habit.longestStreak !== calculatedLongestStreak) {
+            habit.currentStreak = calculatedStreak;
+            habit.longestStreak = calculatedLongestStreak;
+            await habit.save();
         }
 
         return successResponse(
@@ -79,7 +90,7 @@ export async function PUT(
             !validFrequencies.includes(body.frequency)
         ) {
             return errorResponse(
-                "Frequency must be daily or weekly",
+                "Frequency must be daily, weekly, monthly, or yearly",
                 400
             );
         }

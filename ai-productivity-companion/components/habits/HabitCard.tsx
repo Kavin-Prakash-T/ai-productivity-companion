@@ -1,31 +1,52 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { Flame, Repeat, CheckCircle2, Circle, Trash2 } from "lucide-react";
+import { Flame, Repeat, CheckCircle2, Circle, Trash2, Loader2 } from "lucide-react";
 import type { Habit } from "@/types";
-import { checkInHabit } from "@/services/habitService";
+import { checkInHabit, uncheckInHabit } from "@/services/habitService";
+
+import { isHabitCompletedInCurrentPeriod } from "@/utils/habitStreak";
 
 interface Props {
     habit: Habit;
     todayKey: string;
-    onCheckedIn: (id: string) => void;
+    onCheckedIn: (updatedHabit: Habit) => void;
     onDelete?: (id: string) => void;
 }
 
 export default function HabitCard({ habit, todayKey, onCheckedIn, onDelete }: Props) {
 
-    const completedToday = habit.completionLogs.some((log) => log.date === todayKey);
+    const [loading, setLoading] = useState(false);
+    const completedToday = isHabitCompletedInCurrentPeriod(habit.completionLogs, habit.frequency, todayKey);
+    const periodUnit = habit.frequency === 'weekly' ? 'week' : habit.frequency === 'monthly' ? 'month' : habit.frequency === 'yearly' ? 'year' : 'day';
+    const periodShort = habit.frequency === 'weekly' ? 'w' : habit.frequency === 'monthly' ? 'm' : habit.frequency === 'yearly' ? 'y' : 'd';
 
-    async function handleCheckIn(e: React.MouseEvent) {
+    async function handleToggleCheckIn(e: React.MouseEvent) {
         e.preventDefault();
-        if (completedToday) return;
+        e.stopPropagation();
+        if (loading) return;
+
+        setLoading(true);
         try {
-            const { data } = await checkInHabit(habit._id);
-            toast.success(data.message ?? "Habit checked in!");
-            onCheckedIn(habit._id);
+            let updatedHabit: Habit | null = null;
+            if (completedToday) {
+                const { data } = await uncheckInHabit(habit._id);
+                updatedHabit = data.data?.habit ?? data.habit;
+                toast.success(data.message ?? "Check-in removed");
+            } else {
+                const { data } = await checkInHabit(habit._id);
+                updatedHabit = data.data?.habit ?? data.habit;
+                toast.success(data.message ?? "Habit checked in!");
+            }
+            if (updatedHabit) {
+                onCheckedIn(updatedHabit);
+            }
         } catch {
-            toast.error("Check-in failed");
+            toast.error(completedToday ? "Failed to remove check-in" : "Check-in failed");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -45,14 +66,17 @@ export default function HabitCard({ habit, todayKey, onCheckedIn, onDelete }: Pr
                 <div className="flex items-start gap-3 min-w-0">
 
                     <button
-                        onClick={handleCheckIn}
-                        title={completedToday ? "Done for today" : "Check in today"}
-                        className="mt-0.5 shrink-0 text-[#6B7280] transition-colors"
+                        onClick={handleToggleCheckIn}
+                        disabled={loading}
+                        title={completedToday ? `Click to undo check-in for this ${periodUnit}` : `Click to check in for this ${periodUnit}`}
+                        className="mt-0.5 shrink-0 text-[#6B7280] transition-transform active:scale-90 hover:scale-110 disabled:opacity-50 group/check"
                     >
-                        {completedToday ? (
-                            <CheckCircle2 size={20} className="text-[#0A0A0A] fill-gray-100" />
+                        {loading ? (
+                            <Loader2 size={22} className="animate-spin text-[#0A0A0A]" />
+                        ) : completedToday ? (
+                            <CheckCircle2 size={22} className="text-emerald-600 fill-emerald-100 group-hover/check:text-rose-600 group-hover/check:fill-rose-100 transition-colors" />
                         ) : (
-                            <Circle size={20} className="text-[#D1D5DB] hover:text-[#0A0A0A] transition-colors" />
+                            <Circle size={22} className="text-[#D1D5DB] group-hover/check:text-emerald-600 group-hover/check:fill-emerald-50 transition-colors" />
                         )}
                     </button>
 
@@ -80,15 +104,15 @@ export default function HabitCard({ habit, todayKey, onCheckedIn, onDelete }: Pr
             {/* Streak */}
             <div className="mt-5 flex items-end gap-2">
                 <span className="text-4xl font-extrabold text-[#0A0A0A] tracking-tight">{habit.currentStreak}</span>
-                <span className="mb-1 text-[#6B7280] text-xs font-semibold uppercase tracking-wider">day streak</span>
+                <span className="mb-1 text-[#6B7280] text-xs font-semibold uppercase tracking-wider">{periodUnit} streak</span>
             </div>
 
             {/* Stats row */}
             <div className="mt-3 flex gap-4 text-xs font-semibold text-[#6B7280]">
-                <span>Best: {habit.longestStreak}d</span>
+                <span>Best: {habit.longestStreak}{periodShort}</span>
                 <span>Total completions: {habit.totalCompletions}</span>
                 {completedToday && (
-                    <span className="text-green-600 font-bold">✓ Done today</span>
+                    <span className="text-green-600 font-bold">✓ Done {habit.frequency === 'daily' ? 'today' : `this ${periodUnit}`}</span>
                 )}
             </div>
 

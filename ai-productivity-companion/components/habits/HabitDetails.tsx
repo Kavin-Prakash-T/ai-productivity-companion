@@ -6,8 +6,9 @@ import toast from "react-hot-toast";
 import { ArrowLeft, Repeat, FolderOpen, Pencil, Trash2, CheckCircle2, Circle } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-import { getHabit, checkInHabit, deleteHabit } from "@/services/habitService";
+import { getHabit, checkInHabit, uncheckInHabit, deleteHabit } from "@/services/habitService";
 import type { Habit } from "@/types";
+import { isHabitCompletedInCurrentPeriod } from "@/utils/habitStreak";
 import HabitStats from "./HabitStats";
 import HabitCalendar from "./HabitCalendar";
 import ErrorState from "@/components/common/ErrorState";
@@ -47,17 +48,21 @@ export default function HabitDetails({ id }: { id: string }) {
         }
     }
 
-    async function handleCheckIn() {
+    async function handleToggleCheckIn() {
         if (!habit) return;
-        const alreadyDone = habit.completionLogs.some((l) => l.date === todayKey);
-        if (alreadyDone) return;
+        const alreadyDone = isHabitCompletedInCurrentPeriod(habit.completionLogs, habit.frequency, todayKey);
         setCheckingIn(true);
         try {
-            const { data } = await checkInHabit(id);
-            toast.success(data.message ?? "Habit checked in!");
+            if (alreadyDone) {
+                const { data } = await uncheckInHabit(id);
+                toast.success(data.message ?? "Check-in removed");
+            } else {
+                const { data } = await checkInHabit(id);
+                toast.success(data.message ?? "Habit checked in!");
+            }
             await loadHabit();
         } catch {
-            toast.error("Check-in failed");
+            toast.error(alreadyDone ? "Failed to remove check-in" : "Check-in failed");
         } finally {
             setCheckingIn(false);
         }
@@ -91,7 +96,8 @@ export default function HabitDetails({ id }: { id: string }) {
         return <ErrorState message={error ?? "Habit not found."} onRetry={loadHabit} />;
     }
 
-    const completedToday = habit.completionLogs.some((l) => l.date === todayKey);
+    const completedToday = isHabitCompletedInCurrentPeriod(habit.completionLogs, habit.frequency, todayKey);
+    const periodLabel = habit.frequency === 'weekly' ? 'This Week' : habit.frequency === 'monthly' ? 'This Month' : habit.frequency === 'yearly' ? 'This Year' : 'Today';
 
     return (
         <div className="mx-auto max-w-4xl space-y-6">
@@ -156,17 +162,18 @@ export default function HabitDetails({ id }: { id: string }) {
 
                 {/* Check-in button */}
                 <button
-                    onClick={handleCheckIn}
-                    disabled={completedToday || checkingIn}
-                    className={`flex items-center gap-2 rounded-xl px-6 py-3 font-medium transition shadow-sm ${completedToday
-                        ? "bg-gray-100 text-[#9CA3AF] cursor-default"
-                        : "bg-[#0A0A0A] text-white hover:bg-black/90"
+                    onClick={handleToggleCheckIn}
+                    disabled={checkingIn}
+                    className={`group flex items-center gap-2.5 rounded-xl px-6 py-3 font-semibold transition-all shadow-sm active:scale-95 ${completedToday
+                        ? "bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-rose-50 hover:text-rose-700 hover:border-rose-200"
+                        : "bg-[#0A0A0A] text-white hover:bg-emerald-600"
                         } disabled:opacity-50`}
+                    title={completedToday ? `Click to undo check-in for ${periodLabel.toLowerCase()}` : `Click to check in for ${periodLabel.toLowerCase()}`}
                 >
                     {completedToday ? (
-                        <><CheckCircle2 size={20} className="fill-gray-200 text-white" /> Done for today!</>
+                        <><CheckCircle2 size={20} className="text-emerald-600 fill-emerald-100 group-hover:text-rose-600 group-hover:fill-rose-100 transition-colors" /> {checkingIn ? "Updating..." : `Completed ${periodLabel} (Click to Undo)`}</>
                     ) : (
-                        <><Circle size={20} /> {checkingIn ? "Checking in..." : "Check In Today"}</>
+                        <><Circle size={20} className="group-hover:scale-110 transition-transform" /> {checkingIn ? "Checking in..." : `Check In ${periodLabel}`}</>
                     )}
                 </button>
 
