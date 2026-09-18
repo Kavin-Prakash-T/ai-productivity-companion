@@ -11,26 +11,19 @@ import { updatePreferences } from "@/services/settingsService";
 export default function PreferenceForm() {
 
     const [loading, setLoading] = useState(false);
-    const [theme, setTheme] = useState("light");
     const [emailAlerts, setEmailAlerts] = useState(true);
 
     useEffect(() => {
-        const savedTheme = localStorage.getItem("theme") || "light";
-        setTheme(savedTheme);
+        localStorage.setItem("theme", "light");
+        document.documentElement.classList.remove("dark");
     }, []);
 
     async function handleSubmit() {
         setLoading(true);
         try {
-            await updatePreferences({ theme, emailAlerts });
-            localStorage.setItem("theme", theme);
-
-            // Apply theme to document
-            if (theme === "dark") {
-                document.documentElement.classList.add("dark");
-            } else {
-                document.documentElement.classList.remove("dark");
-            }
+            await updatePreferences({ theme: "light", emailAlerts });
+            localStorage.setItem("theme", "light");
+            document.documentElement.classList.remove("dark");
 
             toast.success("Preferences saved successfully");
         } catch {
@@ -55,19 +48,15 @@ export default function PreferenceForm() {
 
             <div className="rounded-2xl border bg-white p-6 sm:p-8 space-y-6">
 
-                {/* Theme Selector */}
+                {/* Theme Preference */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                         Interface Theme
                     </label>
-                    <select
-                        value={theme}
-                        onChange={(e) => setTheme(e.target.value)}
-                        className="w-full h-12 rounded-xl border px-4 focus:border-black focus:ring-1 focus:ring-black transition"
-                    >
-                        <option value="light">Light Mode</option>
-                        <option value="dark">Dark Mode</option>
-                    </select>
+                    <div className="flex items-center justify-between h-12 rounded-xl border border-gray-200 bg-gray-50 px-4 text-sm font-medium text-gray-800">
+                        <span>Light Mode</span>
+                        <span className="text-xs font-semibold text-gray-500 bg-white border border-gray-200 px-2.5 py-1 rounded-lg">Active</span>
+                    </div>
                 </div>
 
                 {/* Toggle switch for notifications */}
