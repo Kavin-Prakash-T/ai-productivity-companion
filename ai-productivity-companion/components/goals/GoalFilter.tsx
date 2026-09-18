@@ -38,7 +38,6 @@ export default function GoalFilter({ search, status, onSearch, onStatus }: Props
                 <option value="not-started">Not Started</option>
                 <option value="in-progress">In Progress</option>
                 <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
             </select>
 
         </div>

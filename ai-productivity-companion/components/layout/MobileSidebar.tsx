@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { X, LogOut, LayoutDashboard, SquareCheckBig, Target, Flame, CalendarDays, Bot, Bell, User, Settings } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import toast from "react-hot-toast";
+import Logo from "@/components/common/Logo";
 
 const menus = [
     { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -49,14 +50,8 @@ export default function MobileSidebar({ open, onClose }: Props) {
             <aside className="fixed inset-y-0 left-0 z-50 w-72 flex flex-col bg-white border-r border-[#E5E7EB] shadow-2xl">
 
                 {/* Header */}
-                <div className="flex items-center justify-between border-b border-[#E5E7EB] p-6">
-
-                    <div>
-                        <h1 className="text-xl font-bold text-[#0A0A0A]">
-                            AI Productivity
-                        </h1>
-                        <p className="text-xs text-[#6B7280] font-medium tracking-wider uppercase mt-1">Companion</p>
-                    </div>
+                <div className="flex items-center justify-between border-b border-[#E5E7EB] px-6 py-5">
+                    <Logo />
 
                     <button
                         onClick={onClose}

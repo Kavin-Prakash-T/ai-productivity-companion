@@ -18,6 +18,8 @@ import {
     LogOut,
 } from "lucide-react";
 
+import Logo from "@/components/common/Logo";
+
 const menus = [
     { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { title: "Tasks", href: "/tasks", icon: SquareCheckBig },
@@ -45,11 +47,8 @@ export default function Sidebar() {
     return (
         <aside className="hidden md:flex w-72 flex-col border-r border-[#E5E7EB] bg-white relative z-20">
 
-            <div className="border-b border-[#E5E7EB] p-6">
-                <h1 className="text-xl font-bold text-[#0A0A0A]">
-                    AI Productivity
-                </h1>
-                <p className="text-xs text-[#6B7280] font-medium tracking-wider uppercase mt-1">Companion</p>
+            <div className="border-b border-[#E5E7EB] px-6 py-5">
+                <Logo />
             </div>
 
             <nav className="flex-1 overflow-y-auto p-4 space-y-1.5">
