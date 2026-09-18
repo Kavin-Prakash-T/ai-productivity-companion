@@ -27,16 +27,24 @@ export default function ProductivityChart({ data }: Props) {
         day: formatDate(item.date),
         Tasks: item.completedTasks,
         Habits: item.completedHabits,
+        "Goal Progress": item.goalProgress ?? 0,
     }));
 
     return (
         <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6 shadow-sm">
 
-            <h2 className="mb-5 text-lg font-bold text-[#0A0A0A]">
-                Weekly Activity
-            </h2>
+            <div className="flex items-center justify-between mb-5">
+                <h2 className="text-lg font-bold text-[#0A0A0A]">
+                    Weekly Activity & Goal Progress
+                </h2>
+                {data.length > 0 && data[0].goalProgress !== undefined && (
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                        Goal Boost Active
+                    </span>
+                )}
+            </div>
 
-            <div className="h-48">
+            <div className="h-52">
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={chartData}>
 
@@ -93,11 +101,20 @@ export default function ProductivityChart({ data }: Props) {
                             activeDot={{ r: 6, strokeWidth: 0, fill: "#9CA3AF" }}
                         />
 
+                        <Line
+                            type="monotone"
+                            dataKey="Goal Progress"
+                            stroke="#F59E0B"
+                            strokeWidth={2.5}
+                            dot={{ r: 4, fill: "#F59E0B", strokeWidth: 0 }}
+                            activeDot={{ r: 6, strokeWidth: 0, fill: "#F59E0B" }}
+                        />
+
                     </LineChart>
                 </ResponsiveContainer>
             </div>
 
-            <div className="mt-4 flex gap-6 text-xs font-semibold text-[#6B7280]">
+            <div className="mt-4 flex flex-wrap gap-6 text-xs font-semibold text-[#6B7280]">
                 <div className="flex items-center gap-2">
                     <div className="h-1.5 w-4 rounded-full bg-[#0A0A0A]" />
                     Tasks Completed
@@ -105,6 +122,10 @@ export default function ProductivityChart({ data }: Props) {
                 <div className="flex items-center gap-2">
                     <div className="h-1.5 w-4 rounded-full bg-[#9CA3AF] border-dashed border-t" />
                     Habits Done
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="h-1.5 w-4 rounded-full bg-[#F59E0B]" />
+                    Goal Progress (%)
                 </div>
             </div>
 

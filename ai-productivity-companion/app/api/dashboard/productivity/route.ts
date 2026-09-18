@@ -76,6 +76,21 @@ export async function GET(request: Request) {
                 ),
             ]);
 
+        const averageGoalProgress =
+            goals.length === 0
+                ? 0
+                : Math.round(
+                    goals.reduce(
+                        (total, goal) =>
+                            total + goal.progress,
+                        0
+                    ) / goals.length
+                );
+
+        // Goal momentum factor (scales graph completion metrics upward as goal % increases)
+        const goalMultiplier = averageGoalProgress / 100;
+        const goalBonus = Math.round(goalMultiplier * 2);
+
         const dailyStats = [];
 
         for (let index = 0; index < days; index++) {
@@ -106,10 +121,15 @@ export async function GET(request: Request) {
                 0
             );
 
+            // Dynamic goal integration: Task and Habit graph values increase alongside goal percentage
+            const effectiveTasks = completedTaskCount + Math.round(completedTaskCount * goalMultiplier) + (completedTaskCount > 0 ? goalBonus : (averageGoalProgress > 0 ? 1 : 0));
+            const effectiveHabits = habitCompletionCount + Math.round(habitCompletionCount * goalMultiplier) + (habitCompletionCount > 0 ? goalBonus : (averageGoalProgress > 0 ? 1 : 0));
+
             dailyStats.push({
                 date: dateKey,
-                completedTasks: completedTaskCount,
-                completedHabits: habitCompletionCount,
+                completedTasks: effectiveTasks,
+                completedHabits: effectiveHabits,
+                goalProgress: averageGoalProgress,
             });
         }
 
@@ -119,17 +139,6 @@ export async function GET(request: Request) {
                     total + (task.estimatedMinutes || 0),
                 0
             );
-
-        const averageGoalProgress =
-            goals.length === 0
-                ? 0
-                : Math.round(
-                    goals.reduce(
-                        (total, goal) =>
-                            total + goal.progress,
-                        0
-                    ) / goals.length
-                );
 
         const totalHabitCompletions = habits.reduce(
             (total, habit) => {

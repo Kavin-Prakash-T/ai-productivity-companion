@@ -167,6 +167,7 @@ export interface DailyStats {
     date: string;
     completedTasks: number;
     completedHabits: number;
+    goalProgress?: number;
 }
 
 export interface ProductivityData {
