@@ -41,7 +41,7 @@ export default function Sidebar() {
     function handleLogout() {
         logout();
         toast.success("Logged out successfully");
-        router.push("/login");
+        router.push("/");
     }
 
     return (

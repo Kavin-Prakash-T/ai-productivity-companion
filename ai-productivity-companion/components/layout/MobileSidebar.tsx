@@ -33,7 +33,7 @@ export default function MobileSidebar({ open, onClose }: Props) {
     function handleLogout() {
         logout();
         toast.success("Logged out successfully");
-        router.push("/login");
+        router.push("/");
     }
 
     if (!open) return null;

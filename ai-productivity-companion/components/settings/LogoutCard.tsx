@@ -14,7 +14,7 @@ export default function LogoutCard() {
         try {
             logout();
             toast.success("Logged out successfully");
-            router.push("/login");
+            router.push("/");
         }
         catch {
             toast.error("Logout failed");
